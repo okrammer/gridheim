@@ -1,0 +1,359 @@
+@import "~bootstrap/scss/bootstrap";
+
+@media (min-width: 2500px) {
+  .container {
+    max-width: 2300px;
+  }
+}
+
+$draw-color-red: #ff1b47;
+$draw-color-yellow: #ffeb10;
+$draw-color-blue: #4b9cff;
+$draw-color-green: #68ff78;
+$draw-color-purple: #e281ff;
+$draw-color-orange: #ff9c5c;
+
+$main-logo-height: 80px;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  sans-serif;
+  //font-family: 'Indie Flower', cursive;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  height: 100%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  monospace;
+}
+
+.icon-button-content {
+  min-width: 16px;
+  min-height: 21px;
+}
+
+.token {
+  stroke-width: 0.05;
+  //stroke: black;
+}
+
+.selected-token {
+  stroke: #0f86ff;
+  stroke-width: 0.2;
+  //stroke-dasharray: 0.1, 0.05;
+  stroke-opacity: 0.6;
+}
+
+.token-text {
+  //alignment-baseline: middle;
+  text-anchor: middle;
+  font-size: 0.04em;
+  font-family: 'Indie Flower', cursive;
+}
+
+.background-grid {
+  stroke-width: 0.02;
+  stroke: black;
+  fill-opacity: 0;
+  stroke-dasharray: 0.01, 0.03;
+}
+
+
+.selection-grid {
+  fill-opacity: 0.0001;
+}
+
+.selection-grid.highlighted {
+  fill: red;
+  fill-opacity: 0.3;
+}
+
+
+.drawing {
+  fill: none;
+}
+
+.drawing-s {
+  stroke-width: 0.03;
+}
+
+.drawing-m {
+  stroke-width: 0.06;
+}
+
+.drawing-l {
+  stroke-width: 0.1;
+}
+
+
+.drawing-red {
+  stroke: $draw-color-red;
+}
+
+.drawing-yellow {
+  stroke: $draw-color-yellow;
+}
+
+.drawing-blue {
+  stroke: $draw-color-blue;
+}
+
+.drawing-green {
+  stroke: $draw-color-green;
+}
+
+.drawing-purple {
+  stroke: $draw-color-purple;
+}
+
+.drawing-orange {
+  stroke: $draw-color-orange;
+}
+
+.drawing.current {
+}
+
+.drawing-pane.erase .drawing:hover {
+  stroke-width: 0.2;
+  opacity: 0.5;
+
+}
+
+.logo-button {
+  border-radius: 0px 0px 30px 0px;
+  height: 60px;
+  width: 60px;
+
+}
+
+.show .logo-button {
+  border-radius: 0px 0px 0px 0px;
+  //transition: border-radius 300ms;
+}
+
+.logo-menu {
+  max-width: 100%;
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0;
+  height: 100px;
+  width: 100px;
+  //background: #0f86ff;
+  z-index: 2000; //must be more than bootstraps 1030 that are used for fix-top
+  border-radius: 0px 0px 50px 0px;
+}
+
+.control-pane {
+  max-width: 100%;
+  display: block;
+  position: absolute;
+  top: $main-logo-height;
+  left: 0;
+  z-index: 3000; //must be more than bootstraps 1030 that are used for fix-top and more than 2000 which is the logo
+}
+
+.drawing-capture-pane {
+  fill: lightgrey;
+  opacity: 0.0001;
+  touch-action: none;
+}
+
+.drawing-pane.background {
+  opacity: 0.6;
+
+  .drawing-pane-background {
+    opacity: 0;
+  }
+}
+
+.drawing-pane.notes {
+  .drawing-pane-background {
+    fill: #b1ad99;
+    opacity: 0.8;
+  }
+}
+
+
+.add-token-label {
+  width: 40px;
+  height: 40px;
+}
+
+.zoom-control-center {
+  stroke-width: 0.1;
+  fill: #4478ff;
+  stroke: #0258b0;
+}
+
+.zoom-control-bead {
+  stroke-width: 0.05;
+  fill: #98c6ff;
+  stroke: #0258b0;
+  fill-opacity: 0.8;
+}
+
+.zoom-pane {
+  fill: #98c6ff;
+  opacity: 0.3;
+}
+
+.zoom-control-bead:hover {
+  stroke-width: 0.1;
+}
+
+@mixin drawing-pane-button {
+  min-width: 31px;
+}
+
+@mixin drawing-color-button-selected($mainColor, $contrastColor) {
+  color: $contrastColor;
+  background-color: $mainColor;
+  border-color: $mainColor;
+}
+
+@mixin drawing-color-button($mainColor, $contrastColor) {
+  color: $mainColor;
+  background-color: $dark;
+  border-color: $mainColor;
+}
+
+
+.drawing-button-red {
+  @include drawing-color-button($draw-color-red, $dark);
+  @include drawing-pane-button
+}
+
+.drawing-button-yellow {
+  @include drawing-color-button($draw-color-yellow, $dark);
+  @include drawing-pane-button
+}
+
+.drawing-button-blue {
+  @include drawing-color-button($draw-color-blue, $dark);
+  @include drawing-pane-button
+}
+
+.drawing-button-green {
+  @include drawing-color-button($draw-color-green, $dark);
+  @include drawing-pane-button
+}
+
+.drawing-button-purple {
+  @include drawing-color-button($draw-color-purple, $dark);
+  @include drawing-pane-button
+}
+
+.drawing-button-orange {
+  @include drawing-color-button($draw-color-orange, $dark);
+  @include drawing-pane-button
+}
+
+.drawing-button-red-selected {
+  @include drawing-color-button-selected($draw-color-red, $dark);
+  @include drawing-pane-button
+}
+
+.drawing-button-yellow-selected {
+  @include drawing-color-button-selected($draw-color-yellow, $dark);
+  @include drawing-pane-button
+}
+
+.drawing-button-blue-selected {
+  @include drawing-color-button-selected($draw-color-blue, $dark);
+  @include drawing-pane-button
+}
+
+.drawing-button-green-selected {
+  @include drawing-color-button-selected($draw-color-green, $dark);
+  @include drawing-pane-button
+}
+
+.drawing-button-purple-selected {
+  @include drawing-color-button-selected($draw-color-purple, $dark);
+  @include drawing-pane-button
+}
+
+.drawing-button-orange-selected {
+  @include drawing-color-button-selected($draw-color-orange, $dark);
+  @include drawing-pane-button
+}
+
+
+//////////////Manage
+.manage-menu {
+  padding: 10px;
+  padding-left: 120px;
+  //margin-top: 120px;
+}
+
+.background-list_container {
+  vertical-align: top;
+  display: inline-block;
+  overflow-y: scroll;
+}
+
+.background-list_item {
+  height: 120px;
+  width: 300px;
+}
+
+
+.manage-content-area {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  padding-top: 100px;
+}
+
+.scrollable-y {
+  overflow: auto;
+}
+
+
+.image-100 {
+  max-height: 100px;
+  max-width: 100px;
+}
+
+.image-200 {
+  max-height: 200px;
+  max-width: 200px;
+}
+
+.image-300 {
+  max-height: 300px;
+  max-width: 300px;
+}
+
+
+.image-400 {
+  max-height: 400px;
+  max-width: 400px;
+}
+
+
+
+
+.full-page-with-heading_content-container{
+  padding-top: 140px;
+}
+
+.full-page-with-heading_heading-container{
+  padding-top: 10px;
+  height: 140px;
+}
+
+
+
+
+
+
+
