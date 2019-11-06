@@ -41,6 +41,11 @@ export const opensource = Object.freeze({
     licence: "MIT",
     licenceUrl: "https://github.com/immerjs/immer/blob/master/LICENSE"
   },
+  "Dexie.js": {
+    page: "https://dexie.org/",
+    licence: "Apache 2.0",
+    licenceUrl: "https://github.com/dfahlander/Dexie.js/blob/master/LICENSE"
+  },
   JQuery: {
     page: "https://jquery.com/",
     licence: "MIT",
