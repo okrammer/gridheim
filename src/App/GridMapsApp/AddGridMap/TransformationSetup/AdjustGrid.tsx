@@ -111,7 +111,11 @@ export const AdjustGrid: FC<Props> = ({
             className="img-thumbnail"
           >
             <g transform={t.asTransformString()}>
-              <image xlinkHref={image.url} />
+              <image
+                width={image.width}
+                height={image.height}
+                xlinkHref={image.url}
+              />
             </g>
             {range(xSquareCount).map(x => {
               return range(ySquareCount).map(y => {

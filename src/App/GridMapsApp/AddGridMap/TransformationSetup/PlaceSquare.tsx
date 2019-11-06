@@ -122,7 +122,11 @@ export const PlaceSquare: FC<Props> = ({ image, onApply }: Props) => {
               onPointerUpCapture={onPointerUp}
               onPointerMoveCapture={onPointerMove}
             >
-              <image xlinkHref={image.url} />
+              <image
+                width={image.width}
+                height={image.height}
+                xlinkHref={image.url}
+              />
               {selectionRect && (
                 <rect
                   x={selectionRect.x}
