@@ -16,7 +16,10 @@ export const ListGroupItemAction: FC<Props> = ({
   return (
     <a
       href="#"
-      onClick={() => onClick && onClick()}
+      onClick={event => {
+        event.preventDefault();
+        onClick && onClick();
+      }}
       className={`list-group-item list-group-item-action ${className} ${
         active ? "active" : ""
       }`}

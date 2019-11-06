@@ -26,7 +26,14 @@ export const DropDown: FC<Props> = ({
           show: show
         })}
       >
-        <a href="#" onClick={onOpen} className={"btn " + buttonClasses}>
+        <a
+          href="#"
+          onClick={event => {
+            event.preventDefault();
+            onOpen();
+          }}
+          className={"btn " + buttonClasses}
+        >
           {buttonContent}
         </a>
         <div

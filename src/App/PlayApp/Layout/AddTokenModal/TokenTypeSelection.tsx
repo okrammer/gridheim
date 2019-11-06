@@ -37,7 +37,10 @@ export const TokenTypeSelection: FC<Props> = ({
         "btn-outline-secondary": !selected,
         "btn-secondary": selected
       })}
-      onClick={onClick}
+      onClick={event => {
+        event.preventDefault();
+        onClick();
+      }}
     >
       <svg viewBox={viewBox.toViewBoxString()} width={svgSize} height={svgSize}>
         <BackgroundGrid width={maxTokenSize} height={maxTokenSize} />

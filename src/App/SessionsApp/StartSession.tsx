@@ -44,7 +44,10 @@ export const StartSession: FC<Props> = ({
         <a
           href="#"
           className="btn btn-secondary float-right"
-          onClick={onCancel}
+          onClick={event => {
+            event.preventDefault();
+            onCancel();
+          }}
         >
           <Octicon icon={X} />
         </a>

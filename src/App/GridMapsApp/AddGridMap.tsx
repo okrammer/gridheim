@@ -53,7 +53,10 @@ export const AddGridMap: FC<Props> = ({ onSave, onCancel }: Props) => {
         <a
           href="#"
           className="btn btn-secondary float-right"
-          onClick={onCancel}
+          onClick={event => {
+            event.preventDefault();
+            onCancel();
+          }}
         >
           <Octicon icon={X} />
         </a>

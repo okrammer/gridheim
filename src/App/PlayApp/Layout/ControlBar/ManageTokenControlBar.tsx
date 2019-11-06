@@ -41,7 +41,10 @@ export const ManageTokenControlBar: FC<Props> = ({
           <div>
             <a
               href="#"
-              onClick={() => manageTokenService.switchMode("switch-token-type")}
+              onClick={event => {
+                event.preventDefault();
+                manageTokenService.switchMode("switch-token-type");
+              }}
               className={classesMap({
                 btn: true,
                 "btn-sm": true,
