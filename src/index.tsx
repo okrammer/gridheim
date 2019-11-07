@@ -6,6 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import "jquery";
 import "popper.js";
 import "bootstrap";
+import "array.prototype.flatmap";
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
