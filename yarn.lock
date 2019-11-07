@@ -1218,6 +1218,11 @@
     "@svgr/plugin-svgo" "^4.3.1"
     loader-utils "^1.2.3"
 
+"@types/array.prototype.flatmap@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/array.prototype.flatmap/-/array.prototype.flatmap-1.2.0.tgz#e11283ae3bf9b432173756764064f2d8a7a377b1"
+  integrity sha512-sMRMigmTCA1EVX46F0jPhSFo51uFNo83GkeYlp7r4xKkXwfjkDpTm13vB9Tba4Ey+0rUXX3QjSWHAIwSb3qzrA==
+
 "@types/babel__core@^7.1.0":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.3.tgz#e441ea7df63cd080dfcd02ab199e6d16a735fc30"

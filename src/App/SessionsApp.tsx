@@ -31,7 +31,7 @@ export const SessionsApp: FC<Props> = ({ storageProvider }: Props) => {
     Readonly<Dict<GridMap>>
   >({});
 
-  const reload = (): void => {
+  const reload = useCallback((): void => {
     combineLatest([
       sessionStorage.findAll(),
       gridMapStorage.findAll(),
@@ -43,11 +43,11 @@ export const SessionsApp: FC<Props> = ({ storageProvider }: Props) => {
         setSelectedSessionName(sessionName);
       }
     });
-  };
+  });
 
   useEffect(() => {
     reload();
-  }, []);
+  }, [reload]);
 
   const noBackgrounds = Object.keys(gridMapsForName).length === 0;
 

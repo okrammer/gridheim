@@ -1,14 +1,6 @@
 import React, { FC } from "react";
 import { FullPageWithHeading } from "../common/FullPageWithHeading";
-import { MediaContainer } from "../common/media/MediaContainer";
-import { MediaBody } from "../common/media/MediaBody";
-import Octicon, {
-  GistSecret,
-  Info,
-  MarkGithub,
-  Milestone,
-  Play
-} from "@primer/octicons-react";
+import Octicon, { Info, Play } from "@primer/octicons-react";
 import { routing } from "../App";
 import { Link } from "react-router-dom";
 import { PageHeader } from "../common/PageHeader";

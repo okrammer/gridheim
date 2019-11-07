@@ -1,3 +1,4 @@
+import flatMap from "array.prototype.flatmap";
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.scss";
@@ -6,7 +7,7 @@ import * as serviceWorker from "./serviceWorker";
 import "jquery";
 import "popper.js";
 import "bootstrap";
-import "array.prototype.flatmap";
+flatMap.shim();
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

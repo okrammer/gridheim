@@ -34,7 +34,7 @@ export const Modal: FC<Props> = ({
       .on("hide.bs.modal", () => {
         onCancel && onCancel();
       });
-  }, []);
+  }, [onCancel]);
 
   useLayoutEffect(() => {
     console.log("effect after open", open);

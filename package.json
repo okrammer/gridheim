@@ -6,6 +6,7 @@
   "license": "GPL-3.0-only",
   "dependencies": {
     "@primer/octicons-react": "^9.1.1",
+    "@types/array.prototype.flatmap": "^1.2.0",
     "@types/bootstrap": "^4.3.1",
     "@types/jquery": "^3.3.31",
     "@types/react-router-dom": "^5.1.0",

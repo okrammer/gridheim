@@ -117,7 +117,7 @@ export const PlayApp: FC<Props> = ({ storageProvider }: Props) => {
       manageTokenService.dispose();
       assetService.dispose();
     };
-  }, []);
+  }, [storageProvider]);
 
   return (
     <>

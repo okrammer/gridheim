@@ -62,10 +62,10 @@ export const opensource = Object.freeze({
     licenceUrl:
       "https://github.com/facebook/create-react-app/blob/master/LICENSE"
   },
-  "es-shims/Array.prototype.flatMap" : {
+  "es-shims/Array.prototype.flatMap": {
     page: "https://github.com/es-shims/Array.prototype.flatMap",
     licence: "MIT",
     licenceUrl:
-        "https://github.com/es-shims/Array.prototype.flatMap/blob/master/LICENSE"
-  },
+      "https://github.com/es-shims/Array.prototype.flatMap/blob/master/LICENSE"
+  }
 });

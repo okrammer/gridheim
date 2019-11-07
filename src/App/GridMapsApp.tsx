@@ -18,12 +18,12 @@ export const GridMapsApp: FC<Props> = ({ storageProvider }: Props) => {
   const [selected, setSelected] = useState<GridMap | null>(null);
   const [gridMapStorage] = useState(() => new GridMapStorage(storageProvider));
   const [gridMaps, setGridMaps] = useState<ReadonlyArray<GridMap>>([]);
-  const reload = (): void => {
+  const reload = useCallback((): void => {
     gridMapStorage.findAll().subscribe({ next: setGridMaps });
-  };
+  });
   useEffect(() => {
     reload();
-  }, []);
+  }, [reload]);
 
   const heading = (
     <PageHeaderWithButtons icon={FileMedia} headline="Manage Maps">
