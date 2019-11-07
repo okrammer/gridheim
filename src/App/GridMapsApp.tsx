@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { GridMapStorage } from "../services/GridMapStorage";
 import { GridMap } from "../model/GridMap";
 import { GridMapList } from "../common/GridMapList";
@@ -18,9 +18,10 @@ export const GridMapsApp: FC<Props> = ({ storageProvider }: Props) => {
   const [selected, setSelected] = useState<GridMap | null>(null);
   const [gridMapStorage] = useState(() => new GridMapStorage(storageProvider));
   const [gridMaps, setGridMaps] = useState<ReadonlyArray<GridMap>>([]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const reload = useCallback((): void => {
     gridMapStorage.findAll().subscribe({ next: setGridMaps });
-  });
+  }, [gridMapStorage]);
   useEffect(() => {
     reload();
   }, [reload]);

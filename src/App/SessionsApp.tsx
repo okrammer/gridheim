@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { FullPageWithHeading } from "../common/FullPageWithHeading";
 import { Session } from "../model/Session";
 import { SessionStorage } from "../services/SessionStorage";
@@ -43,7 +43,7 @@ export const SessionsApp: FC<Props> = ({ storageProvider }: Props) => {
         setSelectedSessionName(sessionName);
       }
     });
-  });
+  }, [sessionStorage, gridMapStorage]);
 
   useEffect(() => {
     reload();
