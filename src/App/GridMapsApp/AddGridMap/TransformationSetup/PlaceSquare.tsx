@@ -1,9 +1,9 @@
-import React, { FC, PointerEvent, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Transformation } from "../../../../model/Transformation";
 import Octicon, { Check, DiffAdded, DiffRemoved } from "@primer/octicons-react";
-import { pointInSvgFromEvent } from "../../../../utils/pointInSvgFromEvent";
 import { BackgroundImage } from "../../../../model/BackgroundImage";
 import { ExplanationBox } from "../../../../common/ExplanationBox";
+import { SelectionRect } from "./SelectionRect";
 
 interface Props {
   image: BackgroundImage;
@@ -21,6 +21,8 @@ export const PlaceSquare: FC<Props> = ({ image, onApply }: Props) => {
     Transformation.default()
   );
 
+  const [square, setSquare] = useState<null | Rect>(null);
+
   useEffect(() => {
     setTransformation(
       Transformation.default().with({
@@ -30,9 +32,6 @@ export const PlaceSquare: FC<Props> = ({ image, onApply }: Props) => {
       })
     );
   }, [image]);
-
-  const [selectionRect, setSelectionRect] = useState<Rect | null>(null);
-  const [draw, setDraw] = useState(false);
 
   const zoomIn = (): void => {
     setTransformation(
@@ -46,47 +45,16 @@ export const PlaceSquare: FC<Props> = ({ image, onApply }: Props) => {
     );
   };
 
-  const onPointerDown = (e: PointerEvent<SVGGElement>): void => {
-    const { x, y } = pointInSvgFromEvent(e);
-    setSelectionRect({ x, y, a: 0 });
-    setDraw(true);
-    e.currentTarget.setPointerCapture(e.pointerId);
-  };
-
-  const onPointerMove = (e: PointerEvent<SVGGElement>): void => {
-    if (draw && selectionRect) {
-      const { x, y } = pointInSvgFromEvent(e);
-      const dx = x - selectionRect.x;
-      const dy = y - selectionRect.y;
-      const a = Math.max(0, Math.max(dx, dy));
-      setSelectionRect({ ...selectionRect, a });
-    }
-  };
-
-  const onPointerUp = (e: PointerEvent<SVGGElement>): void => {
-    if (draw && selectionRect) {
-      const { x, y } = pointInSvgFromEvent(e);
-      const dx = x - selectionRect.x;
-      const dy = y - selectionRect.y;
-      const a = Math.max(0, Math.max(dx, dy));
-      setSelectionRect({ ...selectionRect, a });
-      setDraw(false);
-      e.currentTarget.releasePointerCapture(e.pointerId);
-    }
-  };
-
   const apply = (): void => {
-    if (!selectionRect) {
+    if (!square) {
       return;
     }
 
-    const scale = 1 / selectionRect.a;
-    const dx = -selectionRect.x % selectionRect.a;
-    const dy = -selectionRect.y % selectionRect.a;
+    const scale = 1 / square.a;
+    const dx = -square.x % square.a;
+    const dy = -square.y % square.a;
     onApply(Transformation.of({ dx, dy, scale }));
   };
-
-  const stroke = image.width / 300;
 
   return (
     <>
@@ -116,29 +84,17 @@ export const PlaceSquare: FC<Props> = ({ image, onApply }: Props) => {
             </button>
           </div>
           <svg style={{ width: 600, height: 600 }} className="img-thumbnail">
-            <g
-              transform={transformation.asTransformString()}
-              onPointerDown={onPointerDown}
-              onPointerUpCapture={onPointerUp}
-              onPointerMoveCapture={onPointerMove}
-            >
+            <g transform={transformation.asTransformString()}>
               <image
                 width={image.width}
                 height={image.height}
                 xlinkHref={image.url}
               />
-              {selectionRect && (
-                <rect
-                  x={selectionRect.x}
-                  y={selectionRect.y}
-                  width={selectionRect.a}
-                  height={selectionRect.a}
-                  stroke="red"
-                  fillOpacity={0}
-                  strokeDasharray={`${stroke} ${stroke * 2}`}
-                  strokeWidth={stroke}
-                />
-              )}
+              <SelectionRect
+                width={image.width}
+                height={image.width}
+                onChange={setSquare}
+              />
             </g>
           </svg>
           <div>
@@ -146,6 +102,7 @@ export const PlaceSquare: FC<Props> = ({ image, onApply }: Props) => {
               className="btn btn-sm btn-success mt-2"
               onClick={apply}
               type="button"
+              disabled={!square}
             >
               <Octicon icon={Check} />
               Next

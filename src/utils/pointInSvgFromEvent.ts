@@ -1,4 +1,4 @@
-type MouseEventOnSvg = {
+export type MouseEventOnSvg = {
   currentTarget: SVGGraphicsElement;
   clientX: number;
   clientY: number;
