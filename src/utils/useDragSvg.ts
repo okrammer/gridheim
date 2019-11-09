@@ -57,7 +57,7 @@ export const useDragSvg = (config: SvgDraggingConfig): SvgDrag => {
           ? pointDistance(startPoint.current, point)
           : -1;
 
-        if (d > 5) {
+        if (d > 0.5) {
           configRef.current.onFinished(point);
           setDragging(false);
           document.removeEventListener("pointermove", onPointerMove);

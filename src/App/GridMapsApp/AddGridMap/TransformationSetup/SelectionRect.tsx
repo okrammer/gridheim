@@ -23,7 +23,11 @@ export const SelectionRect: FC<Props> = ({
   const [selectionRect, setSelectionRect] = useState<Rect | null>(null);
   const updateRect = (rect: Rect | null): void => {
     setSelectionRect(rect);
-    onChange(rect ? { ...rect, a: rect.a / 3 } : null);
+    onChange(
+      rect
+        ? { x: rect.x + rect.a / 3, y: rect.y + rect.a / 3, a: rect.a / 3 }
+        : null
+    );
   };
 
   const strokeSize = width / 600;
