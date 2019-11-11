@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import Octicon, {
   FileMedia,
   Info,
+  Key,
   Law,
   Play,
   Repo,
@@ -48,6 +49,12 @@ export const GlobalMenu: FC<Props> = ({  }: Props) => {
             href="https://legal.comsysto.com/comsysto.github.io/de/impressum/"
           >
             <Octicon icon={Law} /> Impressum
+          </a>
+          <a
+            className="dropdown-item"
+            href="https://legal.comsysto.com/comsysto.github.io/en/datenschutz/"
+          >
+            <Octicon icon={Key} /> Data Privacy
           </a>
         </DropDown>
       </div>
