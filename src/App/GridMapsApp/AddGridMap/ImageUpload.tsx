@@ -1,12 +1,19 @@
-import React, { ChangeEvent, FC } from "react";
+import React, { ChangeEvent, FC, useEffect, useState } from "react";
 import { ExplanationBox } from "../../../common/ExplanationBox";
+import Octicon, { Check } from "@primer/octicons-react";
 
 interface Props {
-  url: string | undefined;
-  onUrlChange: (url: string) => void;
+  initialUrl: string | null;
+  onApply: (url: string) => void;
 }
 
-export const ImageUpload: FC<Props> = ({ url, onUrlChange }: Props) => {
+export const ImageUpload: FC<Props> = ({ initialUrl, onApply }: Props) => {
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    setImageUrl(initialUrl);
+  }, [initialUrl]);
+
   const onFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const files = event!.target!.files;
     if (files && files.length > 0) {
@@ -14,19 +21,23 @@ export const ImageUpload: FC<Props> = ({ url, onUrlChange }: Props) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         const url = reader.result as string;
-        onUrlChange(url);
+        setImageUrl(url);
       };
 
       reader.readAsDataURL(file);
     }
   };
   const onResetImage = (): void => {
-    onUrlChange("");
+    setImageUrl(null);
+  };
+
+  const onNext = (): void => {
+    onApply(imageUrl!);
   };
 
   return (
     <>
-      {!!url || (
+      {!!imageUrl || (
         <div className="row mt-3">
           <div className="col-md-12">
             <ExplanationBox>
@@ -49,7 +60,7 @@ export const ImageUpload: FC<Props> = ({ url, onUrlChange }: Props) => {
           </div>
         </div>
       )}
-      {!!url && (
+      {!!imageUrl && (
         <div className="row mt-3">
           <div className="col-md-12">
             <div>
@@ -63,11 +74,24 @@ export const ImageUpload: FC<Props> = ({ url, onUrlChange }: Props) => {
             </div>
             <img
               className="img-thumbnail gridMap-form_image-preview"
-              src={url}
+              src={imageUrl}
             />
           </div>
         </div>
       )}
+      <div className="row mt-3">
+        <div className="col-md-12">
+          <button
+            className="btn btn-sm btn-success mt-2"
+            disabled={!imageUrl}
+            onClick={onNext}
+            type="button"
+          >
+            <Octicon icon={Check} />
+            Next
+          </button>
+        </div>
+      </div>
     </>
   );
 };

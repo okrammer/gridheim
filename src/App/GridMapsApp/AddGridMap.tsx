@@ -15,16 +15,17 @@ interface Props {
 
 const steps = {
   upload: "Upload Image",
-  selectSquare: "Select a Square",
-  adjustGrid: "Adjust Grid Size",
+  selectSquare1: "Select Example Square 1",
+  selectSquare2: "Select Example Square 2",
+  previewGrid: "Preview Grid",
   metadata: "Add Metadata"
 };
 export const AddGridMap: FC<Props> = ({ onSave, onCancel }: Props) => {
-  const [image, setImage] = useState<ImageModel | undefined>(undefined);
+  const [image, setImage] = useState<ImageModel | null>(null);
   const [step, setStep] = useState<string>(steps.upload);
-  const [transformation, setTransformation] = useState<
-    Transformation | undefined
-  >(undefined);
+  const [transformation, setTransformation] = useState<Transformation | null>(
+    null
+  );
 
   const saveGridMap = (name: string): void => {
     if (!name || !image || !transformation) {
@@ -43,7 +44,7 @@ export const AddGridMap: FC<Props> = ({ onSave, onCancel }: Props) => {
 
       img.src = url;
     } else {
-      setImage(undefined);
+      setImage(null);
     }
   };
 
@@ -67,10 +68,10 @@ export const AddGridMap: FC<Props> = ({ onSave, onCancel }: Props) => {
         <StepIndicator steps={Object.values(steps)} active={step} />
         {!image && (
           <ImageUpload
-            url={undefined}
-            onUrlChange={url => {
+            initialUrl={null}
+            onApply={url => {
               setImageFromUrl(url);
-              setStep(steps.selectSquare);
+              setStep(steps.selectSquare1);
             }}
           />
         )}
@@ -81,7 +82,15 @@ export const AddGridMap: FC<Props> = ({ onSave, onCancel }: Props) => {
               setTransformation(transformation);
               setStep(steps.metadata);
             }}
-            onAdjustGrid={() => setStep(steps.adjustGrid)}
+            onStep={step =>
+              setStep(
+                step === "exampleRect1"
+                  ? steps.selectSquare1
+                  : step === "exampleRect2"
+                  ? steps.selectSquare2
+                  : steps.previewGrid
+              )
+            }
           />
         )}
         {image && transformation && (

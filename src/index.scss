@@ -15,6 +15,10 @@ $draw-color-orange: #ff9c5c;
 
 $main-logo-height: 80px;
 
+svg{
+  touch-action: none;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

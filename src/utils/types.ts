@@ -4,4 +4,14 @@ export type PropKeysOf<T> = {
 export type PropsOf<T> = { [K in PropKeysOf<T>]: T[K] };
 export type SomePropsOf<T> = Partial<PropsOf<T>>;
 export type Dict<T> = { [key: string]: T };
-export type Point = { x: number; y: number };
+
+export interface Point {
+  x: number;
+  y: number;
+}
+
+export interface Rect {
+  x: number;
+  y: number;
+  a: number;
+}

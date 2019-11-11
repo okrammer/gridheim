@@ -1,59 +1,52 @@
 import React, { FC, useEffect, useState } from "react";
 import { Transformation } from "../../../../model/Transformation";
-import Octicon, { Check, DiffAdded, DiffRemoved } from "@primer/octicons-react";
+import Octicon, { Check } from "@primer/octicons-react";
 import { BackgroundImage } from "../../../../model/BackgroundImage";
 import { ExplanationBox } from "../../../../common/ExplanationBox";
 import { SelectionRect } from "./SelectionRect";
+import { Rect } from "../../../../utils/types";
+import { ViewControls } from "./common/ViewControls";
+
+const viewPositionToLabel = {
+  center: "center",
+  "left-top": "top left corner",
+  "right-bottom": "bottom right corner"
+};
 
 interface Props {
   image: BackgroundImage;
-  onApply: (t: Transformation) => void;
+  onApply: (rect: Rect) => void;
+  viewPosition: "center" | "left-top" | "right-bottom";
 }
 
-interface Rect {
-  x: number;
-  y: number;
-  a: number;
-}
-
-export const PlaceSquare: FC<Props> = ({ image, onApply }: Props) => {
+export const PlaceSquare: FC<Props> = ({
+  image,
+  onApply,
+  viewPosition
+}: Props) => {
   const [transformation, setTransformation] = useState(
     Transformation.default()
   );
 
-  const [square, setSquare] = useState<null | Rect>(null);
+  const [rect, setRect] = useState<null | Rect>(null);
 
   useEffect(() => {
-    setTransformation(
-      Transformation.default().with({
-        scale: (600 / image.width) * 2,
-        dx: 0,
-        dy: 0
-      })
-    );
-  }, [image]);
+    const scale = (600 / image.width) * 2;
 
-  const zoomIn = (): void => {
-    setTransformation(
-      transformation.with({ scale: transformation.scale + 0.1 })
-    );
-  };
-
-  const zoomOut = (): void => {
-    setTransformation(
-      transformation.with({ scale: transformation.scale - 0.1 })
-    );
-  };
+    const t = Transformation.default().with({
+      scale: scale,
+      dx: viewPosition === "left-top" ? 0 : -(image.width - 600 / scale),
+      dy: viewPosition === "left-top" ? 0 : -(image.height - 600 / scale)
+    });
+    setTransformation(t);
+  }, [image, viewPosition]);
 
   const apply = (): void => {
-    if (!square) {
+    if (!rect) {
       return;
     }
 
-    const scale = 1 / square.a;
-    const dx = -square.x % square.a;
-    const dy = -square.y % square.a;
-    onApply(Transformation.of({ dx, dy, scale }));
+    onApply(rect);
   };
 
   return (
@@ -61,27 +54,18 @@ export const PlaceSquare: FC<Props> = ({ image, onApply }: Props) => {
       <div className="row mt-3">
         <div className="col-md-12">
           <ExplanationBox>
-            For a rough size estimation, draw a rect over the image where a
-            square of the battle grid should be displayed later.
+            For calculating the grid position, draw a rect over the image where
+            9 squares of the battle grid should be displayed later. Try to
+            select an area in the
+            <em>{viewPositionToLabel[viewPosition]}</em> of the map.
             <br />
-            In the next step this grid can be further adjusted ...
           </ExplanationBox>
 
           <div className="mb-2">
-            <button
-              className="btn btn-sm btn-secondary"
-              onClick={zoomIn}
-              type="button"
-            >
-              <Octicon icon={DiffAdded} />
-            </button>
-            <button
-              className="btn btn-sm btn-secondary ml-2"
-              onClick={zoomOut}
-              type="button"
-            >
-              <Octicon icon={DiffRemoved} />
-            </button>
+            <ViewControls
+              transformation={transformation}
+              onTransformationChange={setTransformation}
+            />
           </div>
           <svg style={{ width: 600, height: 600 }} className="img-thumbnail">
             <g transform={transformation.asTransformString()}>
@@ -93,7 +77,7 @@ export const PlaceSquare: FC<Props> = ({ image, onApply }: Props) => {
               <SelectionRect
                 width={image.width}
                 height={image.width}
-                onChange={setSquare}
+                onChange={setRect}
               />
             </g>
           </svg>
@@ -102,7 +86,7 @@ export const PlaceSquare: FC<Props> = ({ image, onApply }: Props) => {
               className="btn btn-sm btn-success mt-2"
               onClick={apply}
               type="button"
-              disabled={!square}
+              disabled={!rect}
             >
               <Octicon icon={Check} />
               Next
