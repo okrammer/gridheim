@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
 import { LayoutGrid } from "../../../common/LayoutGrid";
 import { TokenTypeSelection } from "./AddTokenModal/TokenTypeSelection";
 import { Modal } from "../../../common/Modal";
@@ -30,9 +30,14 @@ export const AddTokenModal: FC<Props> = ({
     manageTokenService.tokenSize
   );
 
+  const onCancel = useCallback(
+    () => manageTokenService.switchMode("add-token"),
+    [manageTokenService]
+  );
+
   return (
     <Modal
-      onCancel={() => manageTokenService.switchMode("add-token")}
+      onCancel={onCancel}
       buttonText={"place it"}
       header={"Add Token"}
       open={showModal}
