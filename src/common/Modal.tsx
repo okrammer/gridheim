@@ -52,18 +52,13 @@ export const Modal: FC<Props> = ({
       className="modal fade"
       id="exampleModal"
       tabIndex={-1}
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
     >
-      <div className="modal-dialog" role="document">
+      <div className="modal-dialog modal-lg modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">
-              {header}
-            </h5>
-            <button type="button" className="close" data-dismiss="modal">
-              <span aria-hidden="true">&times;</span>
+            <h5 className="modal-title">{header}</h5>
+            <button type="button" className="close" onClick={onCancel}>
+              <span>&times;</span>
             </button>
           </div>
           <div className="modal-body">{children}</div>

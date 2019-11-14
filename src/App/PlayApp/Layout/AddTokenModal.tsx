@@ -44,56 +44,62 @@ export const AddTokenModal: FC<Props> = ({
     >
       {!!selectedTokenLabel && !!selectedTokenType && !!selectedTokenSize && (
         <div>
-          <LayoutGrid
-            items={assetService.tokenTypes}
-            columns={6}
-            component={tokenType => (
-              <TokenTypeSelection
-                tokenLabel={selectedTokenLabel}
-                tokenType={tokenType}
-                tokenSize={1} // to preserve the layout
-                onClick={() => manageTokenService.setTokenType(tokenType)}
-                selected={tokenType === selectedTokenType}
-                svgSize={40}
-                maxTokenSize={1}
+          <div className="row">
+            <div className="col-4">
+              <LayoutGrid
+                items={assetService.tokenTypes}
+                columns={4}
+                component={tokenType => (
+                  <TokenTypeSelection
+                    tokenLabel={selectedTokenLabel}
+                    tokenType={tokenType}
+                    tokenSize={1} // to preserve the layout
+                    onClick={() => manageTokenService.setTokenType(tokenType)}
+                    selected={tokenType === selectedTokenType}
+                    svgSize={35}
+                    maxTokenSize={1}
+                  />
+                )}
               />
-            )}
-          />
-          <LayoutGrid
-            items={assetService.tokenLabels}
-            columns={6}
-            component={label => (
-              <TokenTypeSelection
-                tokenLabel={label}
-                tokenType={selectedTokenType}
-                tokenSize={1} // to preserve the layout
-                onClick={() => manageTokenService.setTokenLabel(label)}
-                selected={selectedTokenLabel === label}
-                svgSize={40}
-                maxTokenSize={1}
+            </div>
+            <div className="col-4">
+              <LayoutGrid
+                items={assetService.tokenLabels}
+                columns={4}
+                component={label => (
+                  <TokenTypeSelection
+                    tokenLabel={label}
+                    tokenType={selectedTokenType}
+                    tokenSize={1} // to preserve the layout
+                    onClick={() => manageTokenService.setTokenLabel(label)}
+                    selected={selectedTokenLabel === label}
+                    svgSize={35}
+                    maxTokenSize={1}
+                  />
+                )}
               />
-            )}
-          />
-
-          <LayoutGrid
-            items={range(3)}
-            columns={3}
-            component={i => {
-              const size = i + 1;
-
-              return (
-                <TokenTypeSelection
-                  tokenLabel={selectedTokenLabel}
-                  tokenType={selectedTokenType}
-                  tokenSize={size}
-                  onClick={() => manageTokenService.setTokenSize(size)}
-                  selected={selectedTokenSize === size}
-                  svgSize={90}
-                  maxTokenSize={3}
-                />
-              );
-            }}
-          />
+            </div>
+            <div className="col-4">
+              <LayoutGrid
+                items={range(3)}
+                columns={1}
+                component={i => {
+                  const size = i + 1;
+                  return (
+                    <TokenTypeSelection
+                      tokenLabel={selectedTokenLabel}
+                      tokenType={selectedTokenType}
+                      tokenSize={size}
+                      onClick={() => manageTokenService.setTokenSize(size)}
+                      selected={selectedTokenSize === size}
+                      svgSize={90}
+                      maxTokenSize={3}
+                    />
+                  );
+                }}
+              />
+            </div>
+          </div>
         </div>
       )}
     </Modal>

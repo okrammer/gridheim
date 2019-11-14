@@ -9,9 +9,9 @@ interface Props {
 
 export const LayoutGrid: FC<Props> = ({ items, columns, component }: Props) => {
   return (
-    <div className="row p-lg-5">
+    <div className="row p-2">
       {items.map((item, idx) => (
-        <div key={idx} className={`col-md-${12 / columns}`}>
+        <div key={idx} className={`col-${12 / columns}`}>
           {component(item)}
         </div>
       ))}
