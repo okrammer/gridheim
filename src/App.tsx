@@ -8,9 +8,11 @@ import { AboutApp } from "./App/AboutApp";
 import { RedirectToAboutOnFirstVisit } from "./App/RedirectToAboutOnFirstVisit";
 import { PlayApp } from "./App/PlayApp";
 import { IndexedDbStorageProvider } from "./services/IndexedDbStorageProvider";
+import { StartApp } from "./App/StartApp";
 
 export const routing = {
-  play: "/",
+  start: "/",
+  play: "/play",
   sessions: "/sessions",
   manageGridMaps: "/manage-maps",
   manageTokenTypes: "/manage-token-types",
@@ -29,7 +31,12 @@ export const App: FC<Props> = ({  }: Props) => {
         <div className="h-100">
           <GlobalMenu />
           <Switch>
-            <Route path={routing.play} exact={true}>
+            <Route path={routing.start} exact={true}>
+              <RedirectToAboutOnFirstVisit>
+                <StartApp storageProvider={storageProvider} />
+              </RedirectToAboutOnFirstVisit>
+            </Route>
+            <Route path={routing.play}>
               <RedirectToAboutOnFirstVisit>
                 <PlayApp storageProvider={storageProvider} />
               </RedirectToAboutOnFirstVisit>

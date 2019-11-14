@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import { GridMap } from "../../model/GridMap";
 import { ImageUpload } from "./AddGridMap/ImageUpload";
 import { BackgroundImage as ImageModel } from "../../model/BackgroundImage";
@@ -7,6 +7,7 @@ import { TransformationSetup } from "./AddGridMap/TransformationSetup";
 import { AddMetadata } from "./AddGridMap/AddMetadata";
 import { StepIndicator } from "../../common/StepIndicator";
 import Octicon, { X } from "@primer/octicons-react";
+import { ResetScrolling } from "../../common/FullPageWithHeading";
 
 interface Props {
   onSave: (gridMapImage: GridMap) => void;
@@ -48,6 +49,8 @@ export const AddGridMap: FC<Props> = ({ onSave, onCancel }: Props) => {
     }
   };
 
+  const resetScrolling = useContext(ResetScrolling);
+
   return (
     <div className="card">
       <div className="card-header">
@@ -72,6 +75,7 @@ export const AddGridMap: FC<Props> = ({ onSave, onCancel }: Props) => {
             onApply={url => {
               setImageFromUrl(url);
               setStep(steps.selectSquare1);
+              resetScrolling();
             }}
           />
         )}
@@ -81,16 +85,18 @@ export const AddGridMap: FC<Props> = ({ onSave, onCancel }: Props) => {
             onApply={transformation => {
               setTransformation(transformation);
               setStep(steps.metadata);
+              resetScrolling();
             }}
-            onStep={step =>
+            onStep={step => {
               setStep(
                 step === "exampleRect1"
                   ? steps.selectSquare1
                   : step === "exampleRect2"
                   ? steps.selectSquare2
                   : steps.previewGrid
-              )
-            }
+              );
+              resetScrolling();
+            }}
           />
         )}
         {image && transformation && (
