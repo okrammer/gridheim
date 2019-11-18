@@ -11,7 +11,7 @@ export const PageHeader: FC<Props> = ({ icon, headline, children }: Props) => {
   return (
     <>
       <h1>
-        <Octicon icon={icon} size={40} />
+        {/*<Octicon icon={icon} size={40} />*/}
         <span className="ml-4">{headline}</span>
       </h1>
       {children}

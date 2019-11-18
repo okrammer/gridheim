@@ -1,11 +1,9 @@
 import React, { FC, useState } from "react";
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Switch } from "react-router-dom";
 import { GridMapsPage } from "./App/GridMapsPage";
-import { GlobalMenu } from "./App/GlobalMenu";
 import { SessionsPage } from "./App/SessionsPage";
 import { ManageTokenTypesPage } from "./App/ManageTokenTypesPage";
 import { AboutPage } from "./App/AboutPage";
-import { RedirectToAboutOnFirstVisit } from "./App/RedirectToAboutOnFirstVisit";
 import { PlayPage } from "./App/PlayPage";
 import { IndexedDbStorageProvider } from "./services/IndexedDbStorageProvider";
 import { StartPage } from "./App/StartPage";
@@ -14,6 +12,9 @@ import { SessionStorage } from "./services/SessionStorage";
 import { NewGridMapPage } from "./App/NewGridMapPage";
 import { NewSessionPage } from "./App/NewSessionPage";
 import { OpenSourcePage } from "./App/OpenSourcePage";
+import { AppPage } from "./App/AppPage";
+import { Route } from "react-router";
+import { AssetsPage } from "./App/AssetsPage";
 
 export const routing = {
   start: "/",
@@ -24,7 +25,8 @@ export const routing = {
   newGridMap: "/manage-maps/new",
   about: "/about",
   tokenTypes: "/token-types",
-  openSource: "/open-source"
+  openSource: "/open-source",
+  assets: "/assets"
 };
 
 interface Props {}
@@ -43,56 +45,54 @@ export const App: FC<Props> = ({  }: Props) => {
         <div className="h-100">
           <Switch>
             <Route path={routing.start} exact={true}>
-              <RedirectToAboutOnFirstVisit>
+              <AppPage noHomeButton={true}>
                 <StartPage {...services} />
-              </RedirectToAboutOnFirstVisit>
+              </AppPage>
             </Route>
             <Route path={routing.play}>
-              <RedirectToAboutOnFirstVisit>
-                <GlobalMenu />
+              <AppPage noBackground={true}>
                 <PlayPage {...services} />
-              </RedirectToAboutOnFirstVisit>
+              </AppPage>
             </Route>
             <Route path={routing.newSessions}>
-              <RedirectToAboutOnFirstVisit>
-                <GlobalMenu />
+              <AppPage>
                 <NewSessionPage {...services} />
-              </RedirectToAboutOnFirstVisit>
+              </AppPage>
             </Route>
-
             <Route path={routing.sessions}>
-              <RedirectToAboutOnFirstVisit>
-                <GlobalMenu />
+              <AppPage>
                 <SessionsPage {...services} />
-              </RedirectToAboutOnFirstVisit>
+              </AppPage>
             </Route>
             <Route path={routing.newGridMap}>
-              <RedirectToAboutOnFirstVisit>
-                <GlobalMenu />
+              <AppPage>
                 <NewGridMapPage {...services} />
-              </RedirectToAboutOnFirstVisit>
+              </AppPage>
             </Route>
             <Route path={routing.gridMaps}>
-              <RedirectToAboutOnFirstVisit>
-                <GlobalMenu />
+              <AppPage>
                 <GridMapsPage {...services} />
-              </RedirectToAboutOnFirstVisit>
+              </AppPage>
             </Route>
             <Route path={routing.tokenTypes}>
-              <RedirectToAboutOnFirstVisit>
-                <GlobalMenu />
+              <AppPage>
                 <ManageTokenTypesPage />
-              </RedirectToAboutOnFirstVisit>
+              </AppPage>
             </Route>
             <Route path={routing.openSource}>
-              <RedirectToAboutOnFirstVisit>
-                <GlobalMenu />
+              <AppPage>
                 <OpenSourcePage />
-              </RedirectToAboutOnFirstVisit>
+              </AppPage>
             </Route>
-            <Route path={routing.about}>
-              <GlobalMenu />
-              <AboutPage />
+            <Route path={routing.assets}>
+              <AppPage>
+                <AssetsPage />
+              </AppPage>
+            </Route>
+            <Route path={routing.about} noRedirectToAboutOnFirstVisit={true}>
+              <AppPage>
+                <AboutPage />
+              </AppPage>
             </Route>
           </Switch>
         </div>

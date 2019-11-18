@@ -1,5 +1,6 @@
 import { ExplanationBox } from "../common/ExplanationBox";
 import React from "react";
+import { FileMedia, Icon, Info, Play } from "@primer/octicons-react";
 
 export const labels = Object.freeze({
   playPage: {
@@ -25,12 +26,32 @@ export const labels = Object.freeze({
       </>
     )
   },
+  assetPage: {
+    headline: "Used 3rd Party Assets"
+  },
+  openSourcePage: {
+    headline: "Used Open Source Components"
+  },
   aboutPage: {
     headline: "Let me tell you tale about Gridheim, Friend ...",
     startLink: "Enough talk just start ..."
   },
   startPage: {
     headline: "Welcome to Gridheim, Friend!",
+    sections: {
+      play: {
+        headline: "Play",
+        icon: Play
+      },
+      gridMaps: {
+        headline: "Maps",
+        icon: FileMedia
+      },
+      info: {
+        headline: "Info",
+        icon: Info
+      }
+    },
     about: {
       description: "TBD",
       button: "About"
@@ -38,6 +59,10 @@ export const labels = Object.freeze({
     openSource: {
       description: "TBD",
       button: "Open Source"
+    },
+    assets: {
+      description: "TBD",
+      button: "3rd Party Assets"
     },
     newGridMap: {
       description: "TBD",

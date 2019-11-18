@@ -27,21 +27,16 @@ import { StartSection } from "./StartPage/StartSection";
 import { StartSectionItem } from "./StartPage/StartSectionItem";
 import { labels } from "../data/labels";
 import { links } from "../data/links";
+import { aboutAction } from "./StartPage/actions/AboutAction";
+import { openSourceAction } from "./StartPage/actions/OpenSourceAction";
+import { assetAction } from "./StartPage/actions/AssetAction";
 
 interface Props {
   gridMapStorage: GridMapStorage;
   sessionStorage: SessionStorage;
 }
-const sections: Dict<{ icon: Icon; headline: string }> = {
-  play: {
-    icon: Play,
-    headline: "Play"
-  },
-  gridMaps: {
-    icon: FileMedia,
-    headline: "Maps"
-  }
-};
+const sections: Dict<{ icon: Icon; headline: string }> =
+  labels.startPage.sections;
 
 export const StartPage: FC<Props> = ({
   gridMapStorage,
@@ -53,7 +48,10 @@ export const StartPage: FC<Props> = ({
       newSessionAction(gridMapStorage),
       showSessionsAction(sessionStorage),
       newGridMapAction(),
-      showGridMapsAction(gridMapStorage)
+      showGridMapsAction(gridMapStorage),
+      aboutAction(),
+      openSourceAction(),
+      assetAction()
     ]).pipe(
       map(actions =>
         actions.reduce(
@@ -79,48 +77,29 @@ export const StartPage: FC<Props> = ({
   return (
     <FullPageWithHeading
       heading={
-        <PageHeader icon={Milestone} headline={labels.startPage.headline}>
-          <small>
-            <a href={links.impressum} className="ml-2 mr-2">
-              <Octicon icon={Law} /> Impressum
-            </a>
-            <a href={links.dataProtection}>
-              <Octicon icon={Key} /> Data Protection
-            </a>
-          </small>
-        </PageHeader>
+        <PageHeader icon={Milestone} headline={labels.startPage.headline} />
       }
     >
-      {Object.entries(actions).map(([sectionName, actions], sectionIndex) => (
-        <StartSection
-          key={sectionName}
-          headline={sections[sectionName].headline}
-          icon={sections[sectionName].icon}
-          hero={true}
-        >
-          {actions.map((action, actionIndex) => (
-            <StartSectionItem
-              key={actionIndex}
-              description={action.descriptionText}
-              hero={actionIndex === 0 && sectionIndex === 0}
-              actionText={action.actionText}
-              to={action.to}
-            />
-          ))}
-        </StartSection>
-      ))}
-      <StartSection headline="Infos" icon={Info}>
-        <StartSectionItem
-          description={labels.startPage.about.description}
-          actionText={labels.startPage.about.button}
-          to={routing.about}
-        />
-        <StartSectionItem
-          description={labels.startPage.openSource.description}
-          actionText={labels.startPage.openSource.button}
-          to={routing.openSource}
-        />
-      </StartSection>
+      <div className="container">
+        {Object.entries(actions).map(([sectionName, actions], sectionIndex) => (
+          <StartSection
+            key={sectionName}
+            headline={sections[sectionName].headline}
+            icon={sections[sectionName].icon}
+            hero={true}
+          >
+            {actions.map((action, actionIndex) => (
+              <StartSectionItem
+                key={actionIndex}
+                description={action.descriptionText}
+                hero={actionIndex === 0 && sectionIndex === 0}
+                actionText={action.actionText}
+                to={action.to}
+              />
+            ))}
+          </StartSection>
+        ))}
+      </div>
     </FullPageWithHeading>
   );
 };
