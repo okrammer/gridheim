@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import { ListGroupItemAction } from "../../common/listgroup/ListGroupItemAction";
 import { MediaContainer } from "../../common/media/MediaContainer";
 import { MediaBody } from "../../common/media/MediaBody";
@@ -10,15 +10,13 @@ import { Dict } from "../../utils/types";
 interface Props {
   sessions: ReadonlyArray<Session>;
   gridMapsForName: Readonly<Dict<GridMap>>;
-  selectedSessionName?: string | null;
-  onSelectSession: (sessionName: string) => void;
+  children?: (session: Session) => ReactNode;
 }
 
 export const SessionList: FC<Props> = ({
   sessions,
   gridMapsForName,
-  selectedSessionName,
-  onSelectSession
+  children
 }: Props) => {
   return (
     <ListGroup>
@@ -26,13 +24,7 @@ export const SessionList: FC<Props> = ({
         const gridMap = gridMapsForName[session.gridMapName];
 
         return (
-          <ListGroupItemAction
-            key={session.name}
-            active={session.name === selectedSessionName}
-            onClick={() => {
-              onSelectSession(session.name);
-            }}
-          >
+          <ListGroupItemAction key={session.name}>
             <MediaContainer>
               <MediaBody>
                 <h4>{session.name}</h4>
@@ -55,6 +47,7 @@ export const SessionList: FC<Props> = ({
                     Invalid: Background is missing
                   </span>
                 )}
+                <div>{children && children(session)}</div>
               </MediaBody>
               {gridMap && (
                 <img

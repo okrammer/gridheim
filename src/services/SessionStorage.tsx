@@ -1,6 +1,7 @@
 import { AbstractStorage } from "./AbstractStorage";
 import { Session } from "../model/Session";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
+import { flatMap, map } from "rxjs/operators";
 
 export class SessionStorage extends AbstractStorage<Session, string> {
   protected readonly isStorageKey = (key: string): boolean =>
@@ -28,4 +29,15 @@ export class SessionStorage extends AbstractStorage<Session, string> {
 
   protected readonly keyToStorageKey = (name: string): string =>
     Session.storageKey(name);
+
+  findCurrentSession(): Observable<readonly [string | null, Session | null]> {
+    return this.findCurrentSessionName().pipe(
+      flatMap(name => {
+        if (!name) {
+          return of([null, null] as const);
+        }
+        return this.findBy(name).pipe(map(session => [name, session] as const));
+      })
+    );
+  }
 }

@@ -3,20 +3,16 @@ import { GridMapStorage } from "../services/GridMapStorage";
 import { GridMap } from "../model/GridMap";
 import { GridMapList } from "../common/GridMapList";
 import { FullPageWithHeading } from "../common/FullPageWithHeading";
-import { AddGridMap } from "./GridMapsApp/AddGridMap";
-import Octicon, { FileMedia, Plus, Trashcan } from "@primer/octicons-react";
+import Octicon, { FileMedia, Trashcan } from "@primer/octicons-react";
 import { ExplanationBox } from "../common/ExplanationBox";
 import { PageHeaderWithButtons } from "../common/PageHeaderWithButtons";
-import { StorageProvider } from "../services/StorageProvider";
 
 interface Props {
-  storageProvider: StorageProvider;
+  gridMapStorage: GridMapStorage;
 }
 
-export const GridMapsApp: FC<Props> = ({ storageProvider }: Props) => {
-  const [create, setCreate] = useState(false);
+export const GridMapsPage: FC<Props> = ({ gridMapStorage }: Props) => {
   const [selected, setSelected] = useState<GridMap | null>(null);
-  const [gridMapStorage] = useState(() => new GridMapStorage(storageProvider));
   const [gridMaps, setGridMaps] = useState<ReadonlyArray<GridMap>>([]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const reload = useCallback((): void => {
@@ -28,13 +24,7 @@ export const GridMapsApp: FC<Props> = ({ storageProvider }: Props) => {
 
   const heading = (
     <PageHeaderWithButtons icon={FileMedia} headline="Manage Maps">
-      {!create && (
-        <button className="btn btn-primary" onClick={() => setCreate(true)}>
-          <Octicon icon={Plus} />
-          <span className="ml-2">New Map</span>
-        </button>
-      )}
-      {!create && selected && (
+      {selected && (
         <>
           <button
             type="button"
@@ -63,31 +53,15 @@ export const GridMapsApp: FC<Props> = ({ storageProvider }: Props) => {
           configure a grid for them. The images are stored locally in your
           browser local storage and are not sent to the internet.
         </ExplanationBox>
-        {!create && (
-          <div>
-            <div className="col-md-12">
-              <GridMapList
-                gridMaps={gridMaps}
-                selected={selected}
-                onSelect={setSelected}
-              />
-            </div>
+        <div>
+          <div className="col-md-12">
+            <GridMapList
+              gridMaps={gridMaps}
+              selected={selected}
+              onSelect={setSelected}
+            />
           </div>
-        )}
-        {create && (
-          <div className="row">
-            <div className="col-md-12">
-              <AddGridMap
-                onSave={gridMapImage => {
-                  gridMapStorage.store(gridMapImage);
-                  reload();
-                  setCreate(false);
-                }}
-                onCancel={() => setCreate(false)}
-              />
-            </div>
-          </div>
-        )}
+        </div>
       </FullPageWithHeading>
     </>
   );

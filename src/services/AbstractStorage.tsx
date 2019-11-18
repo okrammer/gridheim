@@ -31,6 +31,10 @@ export abstract class AbstractStorage<T, K> {
     );
   }
 
+  count(): Observable<number> {
+    return this.storageProvider.listKeys().pipe(map(keys => keys.length));
+  }
+
   findBy(objectKey: K): Observable<T | null> {
     return this.loadObject(this.keyToStorageKey(objectKey));
   }

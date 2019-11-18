@@ -15,7 +15,7 @@ export const NoGridMapsFound: FC<Props> = ({  }: Props) => {
       <br />
       <br />
       <span>
-        Please go <Link to={routing.manageGridMaps}>here</Link> to create a map.
+        Please go <Link to={routing.gridMaps}>here</Link> to create a map.
         <br />
         Afterwards come back via the menu in the top left corner (Sessions) to
         start a session.

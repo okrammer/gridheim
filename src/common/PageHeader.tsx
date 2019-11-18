@@ -4,7 +4,7 @@ import Octicon, { Icon } from "@primer/octicons-react";
 interface Props {
   icon: Icon;
   headline: string;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export const PageHeader: FC<Props> = ({ icon, headline, children }: Props) => {

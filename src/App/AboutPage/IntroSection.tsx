@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import Octicon, { Milestone } from "@primer/octicons-react";
-import { FullPageWithHeading } from "../../common/FullPageWithHeading";
 
 interface Props {}
 
