@@ -1,6 +1,5 @@
-import { ExplanationBox } from "../common/ExplanationBox";
 import React from "react";
-import { FileMedia, Icon, Info, Play } from "@primer/octicons-react";
+import { FileMedia, Info, Play } from "@primer/octicons-react";
 
 export const labels = Object.freeze({
   playPage: {
@@ -74,7 +73,7 @@ export const labels = Object.freeze({
     },
     play: {
       description: "TBD",
-      button: "Start Session"
+      button: "Continue Session"
     },
     showGridMaps: {
       description: "TBD",

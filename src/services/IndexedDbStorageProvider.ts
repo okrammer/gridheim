@@ -12,7 +12,7 @@ export class IndexedDbStorageProvider implements StorageProvider {
     string
   > = (() => {
     this.db.version(1).stores({
-      [IndexedDbStorageProvider.TABLE_NAME]: "key,value"
+      [IndexedDbStorageProvider.TABLE_NAME]: "key"
     });
     return this.db.table(IndexedDbStorageProvider.TABLE_NAME);
   })();
