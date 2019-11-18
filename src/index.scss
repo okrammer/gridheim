@@ -153,6 +153,17 @@ code {
   border-radius: 0px 0px 50px 0px;
 }
 
+.main-menu_legal-stuff {
+  max-width: 100%;
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 120px;
+  height: 30px;
+  width: 300px;
+  z-index: 2000;
+}
+
 .control-pane {
   max-width: 100%;
   display: block;
