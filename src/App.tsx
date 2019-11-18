@@ -1,29 +1,41 @@
 import React, { FC, useState } from "react";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
-import { GridMapsApp } from "./App/GridMapsApp";
+import { GridMapsPage } from "./App/GridMapsPage";
 import { GlobalMenu } from "./App/GlobalMenu";
-import { SessionsApp } from "./App/SessionsApp";
-import { ManageTokenTypesApp } from "./App/ManageTokenTypesApp";
-import { AboutApp } from "./App/AboutApp";
+import { SessionsPage } from "./App/SessionsPage";
+import { ManageTokenTypesPage } from "./App/ManageTokenTypesPage";
+import { AboutPage } from "./App/AboutPage";
 import { RedirectToAboutOnFirstVisit } from "./App/RedirectToAboutOnFirstVisit";
-import { PlayApp } from "./App/PlayApp";
+import { PlayPage } from "./App/PlayPage";
 import { IndexedDbStorageProvider } from "./services/IndexedDbStorageProvider";
-import { StartApp } from "./App/StartApp";
+import { StartPage } from "./App/StartPage";
+import { GridMapStorage } from "./services/GridMapStorage";
+import { SessionStorage } from "./services/SessionStorage";
+import { NewGridMapPage } from "./App/NewGridMapPage";
+import { NewSessionPage } from "./App/NewSessionPage";
+import { OpenSourcePage } from "./App/OpenSourcePage";
 
 export const routing = {
   start: "/",
   play: "/play",
   sessions: "/sessions",
-  manageGridMaps: "/manage-maps",
-  manageTokenTypes: "/manage-token-types",
-  about: "/about"
+  newSessions: "/sessions/new",
+  gridMaps: "/manage-maps",
+  newGridMap: "/manage-maps/new",
+  about: "/about",
+  tokenTypes: "/token-types",
+  openSource: "/open-source"
 };
 
 interface Props {}
 
 export const App: FC<Props> = ({  }: Props) => {
-  // const [storageProvider] = useState(() => new LocalStorageStorageProvider());
-  const [storageProvider] = useState(() => new IndexedDbStorageProvider());
+  const [services] = useState(() => {
+    const storageProvider = new IndexedDbStorageProvider();
+    const gridMapStorage = new GridMapStorage(storageProvider);
+    const sessionStorage = new SessionStorage(storageProvider);
+    return { storageProvider, gridMapStorage, sessionStorage };
+  });
 
   return (
     <>
@@ -33,31 +45,47 @@ export const App: FC<Props> = ({  }: Props) => {
           <Switch>
             <Route path={routing.start} exact={true}>
               <RedirectToAboutOnFirstVisit>
-                <StartApp storageProvider={storageProvider} />
+                <StartPage {...services} />
               </RedirectToAboutOnFirstVisit>
             </Route>
             <Route path={routing.play}>
               <RedirectToAboutOnFirstVisit>
-                <PlayApp storageProvider={storageProvider} />
+                <PlayPage {...services} />
               </RedirectToAboutOnFirstVisit>
             </Route>
+            <Route path={routing.newSessions}>
+              <RedirectToAboutOnFirstVisit>
+                <NewSessionPage {...services} />
+              </RedirectToAboutOnFirstVisit>
+            </Route>
+
             <Route path={routing.sessions}>
               <RedirectToAboutOnFirstVisit>
-                <SessionsApp storageProvider={storageProvider} />
+                <SessionsPage {...services} />
               </RedirectToAboutOnFirstVisit>
             </Route>
-            <Route path={routing.manageGridMaps}>
+            <Route path={routing.newGridMap}>
               <RedirectToAboutOnFirstVisit>
-                <GridMapsApp storageProvider={storageProvider} />
+                <NewGridMapPage {...services} />
               </RedirectToAboutOnFirstVisit>
             </Route>
-            <Route path={routing.manageTokenTypes}>
+            <Route path={routing.gridMaps}>
               <RedirectToAboutOnFirstVisit>
-                <ManageTokenTypesApp />
+                <GridMapsPage {...services} />
+              </RedirectToAboutOnFirstVisit>
+            </Route>
+            <Route path={routing.tokenTypes}>
+              <RedirectToAboutOnFirstVisit>
+                <ManageTokenTypesPage />
+              </RedirectToAboutOnFirstVisit>
+            </Route>
+            <Route path={routing.openSource}>
+              <RedirectToAboutOnFirstVisit>
+                <OpenSourcePage />
               </RedirectToAboutOnFirstVisit>
             </Route>
             <Route path={routing.about}>
-              <AboutApp />
+              <AboutPage />
             </Route>
           </Switch>
         </div>

@@ -1,11 +1,11 @@
-import React, { FC, ReactNodeArray } from "react";
+import React, { FC, ReactNode } from "react";
 import { Icon } from "@primer/octicons-react";
 import { PageHeader } from "./PageHeader";
 
 interface Props {
   icon: Icon;
   headline: string;
-  children: ReactNodeArray;
+  children: ReactNode;
 }
 
 export const PageHeaderWithButtons: FC<Props> = ({

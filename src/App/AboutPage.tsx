@@ -4,26 +4,25 @@ import Octicon, { Info, Play } from "@primer/octicons-react";
 import { routing } from "../App";
 import { Link } from "react-router-dom";
 import { PageHeader } from "../common/PageHeader";
-import { OpenSourceSection } from "./AboutApp/OpenSourceSection";
-import { IntroSection } from "./AboutApp/IntroSection";
-import { HelloSection } from "./AboutApp/HelloSection";
+import { IntroSection } from "./AboutPage/IntroSection";
+import { HelloSection } from "./AboutPage/HelloSection";
+import { texts } from "../data/Texts";
 
 interface Props {}
 
-export const AboutApp: FC<Props> = ({  }: Props) => {
+export const AboutPage: FC<Props> = ({  }: Props) => {
   return (
     <FullPageWithHeading
       heading={
-        <PageHeader icon={Info} headline="Welcome to Gridheim, Friend!">
-          <Link to={routing.play}>
-            <Octicon icon={Play} /> Enough talk just start playing ...
+        <PageHeader icon={Info} headline={texts.aboutPage.headline}>
+          <Link to={routing.start}>
+            <Octicon icon={Play} /> {texts.aboutPage.startLink}
           </Link>
         </PageHeader>
       }
     >
       <IntroSection />
       <HelloSection />
-      <OpenSourceSection />
     </FullPageWithHeading>
   );
 };

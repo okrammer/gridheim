@@ -7,7 +7,8 @@ export function useObservable<T>(
     | Observable<T>
     | undefined
     | null,
-  defaultValue: T
+  defaultValue: T,
+  dependencies: any[] = [observable$]
 ): T {
   const [observableState, setObservableState] = useState<T>(defaultValue);
 
@@ -28,7 +29,7 @@ export function useObservable<T>(
       });
       return (): void => subscription.unsubscribe();
     }
-  }, [observable$]);
+  }, dependencies);
 
   return observableState;
 }

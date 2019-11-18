@@ -7,6 +7,7 @@ import * as serviceWorker from "./serviceWorker";
 import "jquery";
 import "popper.js";
 import "bootstrap";
+
 flatMap.shim();
 
 ReactDOM.render(<App />, document.getElementById("root"));

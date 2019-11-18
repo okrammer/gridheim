@@ -3,33 +3,36 @@ import { Token } from "../model/Token";
 import { Square } from "../model/Square";
 import { DrawingPane } from "../model/DrawingPane";
 import { map } from "rxjs/operators";
-import { Services } from "./PlayApp/services/Services";
-import { BattleMapService } from "./PlayApp/services/BattleMapService";
-import { PlayModeService } from "./PlayApp/services/modebased/PlayModeService";
-import { DrawingService } from "./PlayApp/services/modebased/DrawingService";
-import { AssetService } from "./PlayApp/services/AssetService";
-import { ManageTokenService } from "./PlayApp/services/modebased/ManageTokenService";
-import { ModeService } from "./PlayApp/services/ModeService";
-import { SaveSessionService } from "./PlayApp/services/SaveSessionService";
-import { Layout } from "./PlayApp/Layout";
+import { Services } from "./PlayPage/services/Services";
+import { BattleMapService } from "./PlayPage/services/BattleMapService";
+import { PlayModeService } from "./PlayPage/services/modebased/PlayModeService";
+import { DrawingService } from "./PlayPage/services/modebased/DrawingService";
+import { AssetService } from "./PlayPage/services/AssetService";
+import { ManageTokenService } from "./PlayPage/services/modebased/ManageTokenService";
+import { ModeService } from "./PlayPage/services/ModeService";
+import { SaveSessionService } from "./PlayPage/services/SaveSessionService";
+import { Layout } from "./PlayPage/Layout";
 import { SessionStorage } from "../services/SessionStorage";
 import { GridMapStorage } from "../services/GridMapStorage";
-import { NoSessionsFound } from "./PlayApp/NoSessionsFound";
-import { StorageProvider } from "../services/StorageProvider";
+import { NoSessionsFound } from "./PlayPage/NoSessionsFound";
 
 interface Props {
-  storageProvider: StorageProvider;
+  gridMapStorage: GridMapStorage;
+  sessionStorage: SessionStorage;
 }
 
-export const PlayApp: FC<Props> = ({ storageProvider }: Props) => {
+export const PlayPage: FC<Props> = ({
+  gridMapStorage,
+  sessionStorage
+}: Props) => {
   const [services, setServices] = useState<Services | null>(null);
   const [sessionLoaded, setSessionLoaded] = useState<
     "FAILED" | "LOADING" | "LOADED"
   >("LOADING");
   useEffect(() => {
     const saveSessionService = new SaveSessionService(
-      new GridMapStorage(storageProvider),
-      new SessionStorage(storageProvider)
+      gridMapStorage,
+      sessionStorage
     );
     const battleMapService = new BattleMapService(saveSessionService);
     const playModeService = new PlayModeService(battleMapService);
@@ -117,7 +120,7 @@ export const PlayApp: FC<Props> = ({ storageProvider }: Props) => {
       manageTokenService.dispose();
       assetService.dispose();
     };
-  }, [storageProvider]);
+  }, [sessionStorage, gridMapStorage]);
 
   return (
     <>

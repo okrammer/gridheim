@@ -105,7 +105,7 @@ export const StartSession: FC<Props> = ({
                   type="button"
                   onClick={() => name && save()}
                 >
-                  Save
+                  Save and Start Session
                 </button>
               </div>
             </div>

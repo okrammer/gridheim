@@ -1,5 +1,5 @@
 import { BehaviorSubject, Observable } from "rxjs";
-import { ModeBasedService } from "../App/PlayApp/services/modebased/ModeBasedService";
+import { ModeBasedService } from "../App/PlayPage/services/modebased/ModeBasedService";
 import { AbstractService } from "./AbstractService";
 
 export abstract class AbstractModeBasedService extends AbstractService

@@ -1,17 +1,6 @@
-import React, { FC, ReactNode, useState } from "react";
+import React, { FC, useState } from "react";
 import { Transformation } from "../../../../model/Transformation";
-import Octicon, {
-  ArrowDown,
-  ArrowLeft,
-  ArrowRight,
-  ArrowUp,
-  Check,
-  DiffAdded,
-  DiffRemoved,
-  Icon,
-  ScreenFull,
-  ScreenNormal
-} from "@primer/octicons-react";
+import Octicon, { Check } from "@primer/octicons-react";
 import { BackgroundImage } from "../../../../model/BackgroundImage";
 import { range } from "../../../../utils/range";
 import { ExplanationBox } from "../../../../common/ExplanationBox";

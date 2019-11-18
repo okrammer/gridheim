@@ -21,7 +21,7 @@ const steps = {
   previewGrid: "Preview Grid",
   metadata: "Add Metadata"
 };
-export const AddGridMap: FC<Props> = ({ onSave, onCancel }: Props) => {
+export const NewGridMap: FC<Props> = ({ onSave, onCancel }: Props) => {
   const [image, setImage] = useState<ImageModel | null>(null);
   const [step, setStep] = useState<string>(steps.upload);
   const [transformation, setTransformation] = useState<Transformation | null>(
