@@ -33,7 +33,7 @@ export const labels = Object.freeze({
     headline: "Used Open Source Components"
   },
   aboutPage: {
-    headline: "Let me tell you tale about Gridheim, Friend ...",
+    headline: "Let me tell you about Gridheim, Friend ...",
     startLink: "Enough talk just start ..."
   },
   startPage: {
