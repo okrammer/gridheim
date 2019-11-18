@@ -3,7 +3,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { routing } from "../../../App";
 import { GridMapStorage } from "../../../services/GridMapStorage";
-import { texts } from "../../../data/Texts";
+import { labels } from "../../../data/labels";
 
 export const showGridMapsAction = (
   gridMapStorage: GridMapStorage
@@ -16,8 +16,8 @@ export const showGridMapsAction = (
 
       return {
         to: routing.gridMaps,
-        descriptionText: texts.startPage.showGridMaps.description,
-        actionText: texts.startPage.showGridMaps.button,
+        descriptionText: labels.startPage.showGridMaps.description,
+        actionText: labels.startPage.showGridMaps.button,
         section: "gridMaps"
       };
     })

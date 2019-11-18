@@ -12,7 +12,7 @@ import { arrayToDict } from "../utils/arrayToDict";
 import { PageHeader } from "../common/PageHeader";
 import { routing } from "../App";
 import { useNavigation } from "../utils/useNavigation";
-import { texts } from "../data/Texts";
+import { labels } from "../data/labels";
 
 interface Props {
   sessionStorage: SessionStorage;
@@ -44,10 +44,10 @@ export const NewSessionPage: FC<Props> = ({
   return (
     <FullPageWithHeading
       heading={
-        <PageHeader icon={Repo} headline={texts.newSessionPage.headline} />
+        <PageHeader icon={Repo} headline={labels.newSessionPage.headline} />
       }
     >
-      <ExplanationBox>{texts.newSessionPage.explanation}</ExplanationBox>
+      <ExplanationBox>{labels.newSessionPage.explanation}</ExplanationBox>
       {noGridMaps && <NoGridMapsFound />}
 
       {!noGridMaps && (

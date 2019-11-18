@@ -10,7 +10,7 @@ import {
 import { Mode, ModeService } from "../../services/ModeService";
 import { useObservable } from "../../../../utils/useObservable";
 import { ControlBarButton } from "../../common/ControlBarButton";
-import { texts } from "../../../../data/Texts";
+import { labels } from "../../../../data/labels";
 
 interface Props {
   modeService: ModeService;
@@ -37,23 +37,23 @@ export const ModeControlBar: FC<Props> = ({ modeService }: Props) => {
 
   return (
     <div className="">
-      {modeButton(GitCompare, "play", texts.playPage.controlBar.playButton)}
+      {modeButton(GitCompare, "play", labels.playPage.controlBar.playButton)}
       {modeButton(
         Octoface,
         "manage-token",
-        texts.playPage.controlBar.addTokensButton
+        labels.playPage.controlBar.addTokensButton
       )}
       {modeButton(
         Note,
         "draw-notes",
-        texts.playPage.controlBar.drawNotesButton
+        labels.playPage.controlBar.drawNotesButton
       )}
       {modeButton(
         FileMedia,
         "draw-background",
-        texts.playPage.controlBar.drawBackgroundButton
+        labels.playPage.controlBar.drawBackgroundButton
       )}
-      {modeButton(Search, "zoom", texts.playPage.controlBar.zoomButton)}
+      {modeButton(Search, "zoom", labels.playPage.controlBar.zoomButton)}
     </div>
   );
 };

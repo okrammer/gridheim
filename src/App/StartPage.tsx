@@ -25,7 +25,7 @@ import { combineLatest } from "rxjs";
 import { Dict } from "../utils/types";
 import { StartSection } from "./StartPage/StartSection";
 import { StartSectionItem } from "./StartPage/StartSectionItem";
-import { texts } from "../data/Texts";
+import { labels } from "../data/labels";
 import { links } from "../data/links";
 
 interface Props {
@@ -79,7 +79,7 @@ export const StartPage: FC<Props> = ({
   return (
     <FullPageWithHeading
       heading={
-        <PageHeader icon={Milestone} headline={texts.startPage.headline}>
+        <PageHeader icon={Milestone} headline={labels.startPage.headline}>
           <small>
             <a href={links.impressum} className="ml-2 mr-2">
               <Octicon icon={Law} /> Impressum
@@ -111,13 +111,13 @@ export const StartPage: FC<Props> = ({
       ))}
       <StartSection headline="Infos" icon={Info}>
         <StartSectionItem
-          description={texts.startPage.about.description}
-          actionText={texts.startPage.about.button}
+          description={labels.startPage.about.description}
+          actionText={labels.startPage.about.button}
           to={routing.about}
         />
         <StartSectionItem
-          description={texts.startPage.openSource.description}
-          actionText={texts.startPage.openSource.button}
+          description={labels.startPage.openSource.description}
+          actionText={labels.startPage.openSource.button}
           to={routing.openSource}
         />
       </StartSection>

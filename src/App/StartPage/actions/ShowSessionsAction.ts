@@ -3,7 +3,7 @@ import { SessionStorage } from "../../../services/SessionStorage";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { routing } from "../../../App";
-import { texts } from "../../../data/Texts";
+import { labels } from "../../../data/labels";
 
 export const showSessionsAction = (
   sessionStorage: SessionStorage
@@ -16,8 +16,8 @@ export const showSessionsAction = (
 
       return {
         to: routing.sessions,
-        descriptionText: texts.startPage.showSessions.description,
-        actionText: texts.startPage.showSessions.button,
+        descriptionText: labels.startPage.showSessions.description,
+        actionText: labels.startPage.showSessions.button,
         section: "play"
       };
     })

@@ -1,13 +1,13 @@
 import { Action } from "../Action";
 import { Observable, of } from "rxjs";
 import { routing } from "../../../App";
-import { texts } from "../../../data/Texts";
+import { labels } from "../../../data/labels";
 
 export const newGridMapAction = (): Observable<Action | null> => {
   return of({
     to: routing.newGridMap,
-    descriptionText: texts.startPage.newGridMap.description,
-    actionText: texts.startPage.newGridMap.button,
+    descriptionText: labels.startPage.newGridMap.description,
+    actionText: labels.startPage.newGridMap.button,
     section: "gridMaps"
   });
 };

@@ -1,7 +1,7 @@
 import { ExplanationBox } from "../common/ExplanationBox";
 import React from "react";
 
-export const texts = Object.freeze({
+export const labels = Object.freeze({
   playPage: {
     controlBar: {
       drawBackgroundButton:

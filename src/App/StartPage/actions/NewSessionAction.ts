@@ -3,7 +3,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { routing } from "../../../App";
 import { GridMapStorage } from "../../../services/GridMapStorage";
-import { texts } from "../../../data/Texts";
+import { labels } from "../../../data/labels";
 
 export const newSessionAction = (
   gridMapStorage: GridMapStorage
@@ -16,8 +16,8 @@ export const newSessionAction = (
 
       return {
         to: routing.newSessions,
-        descriptionText: texts.startPage.newSession.description,
-        actionText: texts.startPage.newSession.button,
+        descriptionText: labels.startPage.newSession.description,
+        actionText: labels.startPage.newSession.button,
         section: "play"
       };
     })

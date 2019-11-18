@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { PageHeader } from "../common/PageHeader";
 import { IntroSection } from "./AboutPage/IntroSection";
 import { HelloSection } from "./AboutPage/HelloSection";
-import { texts } from "../data/Texts";
+import { labels } from "../data/labels";
 
 interface Props {}
 
@@ -14,9 +14,9 @@ export const AboutPage: FC<Props> = ({  }: Props) => {
   return (
     <FullPageWithHeading
       heading={
-        <PageHeader icon={Info} headline={texts.aboutPage.headline}>
+        <PageHeader icon={Info} headline={labels.aboutPage.headline}>
           <Link to={routing.start}>
-            <Octicon icon={Play} /> {texts.aboutPage.startLink}
+            <Octicon icon={Play} /> {labels.aboutPage.startLink}
           </Link>
         </PageHeader>
       }
