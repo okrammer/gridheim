@@ -22,13 +22,13 @@ export const FullPageWithHeading: FC<Props> = ({
     <>
       <div
         ref={ref}
-        className="container h-100 scrollable-y full-page-with-heading_content-container"
+        className="h-100 scrollable-y full-page-with-heading_content-container"
       >
         <div className="container text-center full-page-with-heading_heading-container">
           {heading}
         </div>
         <ResetScrolling.Provider value={onResetScrolling}>
-          {children}
+          <div className="container">{children}</div>
         </ResetScrolling.Provider>
       </div>
     </>
