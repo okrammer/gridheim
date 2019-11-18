@@ -78,11 +78,11 @@ export const labels = Object.freeze({
     },
     showGridMaps: {
       description: "TBD",
-      button: "Show Maps"
+      button: "Manage Maps"
     },
     showSessions: {
       description: "TBD",
-      button: "Show Sessions"
+      button: "Manage Sessions"
     }
   }
 });
