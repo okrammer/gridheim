@@ -41,7 +41,6 @@ export const App: FC<Props> = ({  }: Props) => {
     <>
       <Router>
         <div className="h-100">
-          <GlobalMenu />
           <Switch>
             <Route path={routing.start} exact={true}>
               <RedirectToAboutOnFirstVisit>
@@ -50,41 +49,49 @@ export const App: FC<Props> = ({  }: Props) => {
             </Route>
             <Route path={routing.play}>
               <RedirectToAboutOnFirstVisit>
+                <GlobalMenu />
                 <PlayPage {...services} />
               </RedirectToAboutOnFirstVisit>
             </Route>
             <Route path={routing.newSessions}>
               <RedirectToAboutOnFirstVisit>
+                <GlobalMenu />
                 <NewSessionPage {...services} />
               </RedirectToAboutOnFirstVisit>
             </Route>
 
             <Route path={routing.sessions}>
               <RedirectToAboutOnFirstVisit>
+                <GlobalMenu />
                 <SessionsPage {...services} />
               </RedirectToAboutOnFirstVisit>
             </Route>
             <Route path={routing.newGridMap}>
               <RedirectToAboutOnFirstVisit>
+                <GlobalMenu />
                 <NewGridMapPage {...services} />
               </RedirectToAboutOnFirstVisit>
             </Route>
             <Route path={routing.gridMaps}>
               <RedirectToAboutOnFirstVisit>
+                <GlobalMenu />
                 <GridMapsPage {...services} />
               </RedirectToAboutOnFirstVisit>
             </Route>
             <Route path={routing.tokenTypes}>
               <RedirectToAboutOnFirstVisit>
+                <GlobalMenu />
                 <ManageTokenTypesPage />
               </RedirectToAboutOnFirstVisit>
             </Route>
             <Route path={routing.openSource}>
               <RedirectToAboutOnFirstVisit>
+                <GlobalMenu />
                 <OpenSourcePage />
               </RedirectToAboutOnFirstVisit>
             </Route>
             <Route path={routing.about}>
+              <GlobalMenu />
               <AboutPage />
             </Route>
           </Switch>

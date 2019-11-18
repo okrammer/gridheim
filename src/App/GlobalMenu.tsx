@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import Octicon, { ThreeBars } from "@primer/octicons-react";
+import Octicon, { Home } from "@primer/octicons-react";
 import { routing } from "../App";
 import { Link } from "react-router-dom";
 
@@ -15,7 +15,7 @@ export const GlobalMenu: FC<Props> = ({  }: Props) => {
         >
           <div>
             <div className="position-absolute">
-              <Octicon icon={ThreeBars} width={30} height={50} />
+              <Octicon icon={Home} width={30} height={50} />
             </div>
           </div>
         </Link>
