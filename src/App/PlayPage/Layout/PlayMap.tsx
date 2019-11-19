@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { BattleMapService } from "../services/BattleMapService";
 import { DisplayBackgroundImage } from "./PlayMap/DisplayBackgroundImage";
 import { DisplayTokens } from "./PlayMap/DisplayTokens";
@@ -8,32 +8,42 @@ import { DrawingService } from "../services/modebased/DrawingService";
 import { DrawingPane } from "./PlayMap/DrawingPane";
 import { ModeService } from "../services/ModeService";
 import { map } from "rxjs/operators";
-import { ZoomPane } from "./PlayMap/ZoomPane";
+import { Viewport } from "./PlayMap/Viewport";
 import { is } from "../../../utils/is";
 import { combineLatest } from "rxjs";
 import { BackgroundGrid } from "./PlayMap/BackgroundGrid";
 import { SelectionGrid } from "./PlayMap/SelectionGrid";
 import { ViewBox } from "../../../model/ViewBox";
+import { pointInSvgFromEvent } from "../../../utils/pointInSvgFromEvent";
+import { Point } from "../../../utils/types";
+import { useStateRef } from "../../../utils/useStateRef";
+import { windowAspectRatio } from "../../../utils/windowAspectRatio";
+import { SaveSessionService } from "../services/SaveSessionService";
 
 interface Props {
   battleMapService: BattleMapService;
   backgroundDrawingService: DrawingService;
   notesDrawingService: DrawingService;
   modeService: ModeService;
+  saveSessionService: SaveSessionService;
 }
 
+const VIEW_BOX_SIZE = 10;
+
 export const PlayMap: FC<Props> = ({
+  saveSessionService,
   battleMapService,
   backgroundDrawingService,
   notesDrawingService,
   modeService
 }: Props) => {
-  const viewBox = useObservable(
-    battleMapService.viewBox$,
-    new ViewBox(0, 0, 0, 0)
-  );
   const tokens = useObservable(battleMapService.tokens$, []);
   const notesDrawing = useObservable(notesDrawingService.active$, false);
+  const draggingEnabled = useObservable(
+    modeService.mode$.pipe(map(is("zoom"))),
+    false
+  );
+
   const squareSelectable = useObservable(
     combineLatest([
       battleMapService.squareSelectable$,
@@ -41,26 +51,31 @@ export const PlayMap: FC<Props> = ({
     ]).pipe(map(([a, b]) => a && b)),
     false
   );
-  const zoomActive = useObservable(
-    modeService.mode$.pipe(map(is("zoom"))),
-    false
-  );
-  const gridMap = useObservable(battleMapService.gridMap$, null);
-  const scale = useObservable(battleMapService.scale$, battleMapService.scale);
-  const position = useObservable(
-    battleMapService.position$,
-    battleMapService.position
-  );
+
+  const gridMap = useObservable(saveSessionService.gridMap$, null);
   const highlightedSquares = useObservable(
     battleMapService.highlightedSquares$,
     []
   );
+  const [viewBox] = useState(
+    () => new ViewBox(0, 0, VIEW_BOX_SIZE, VIEW_BOX_SIZE / windowAspectRatio())
+  );
+
+  const initialScale =
+    gridMap && viewBox
+      ? Math.min(
+          viewBox.width / gridMap.getWidthInSquares(),
+          viewBox.height / gridMap.getHeightInSquares()
+        )
+      : 1;
+
   return (
     <>
       {gridMap && (
         <svg className="h-100 w-100" viewBox={viewBox.toViewBoxString()}>
-          <g
-            transform={`translate(${position.x} ${position.y}) scale(${scale}, ${scale})`}
+          <Viewport
+            initialScale={initialScale}
+            draggingEnabled={draggingEnabled}
           >
             <DisplayBackgroundImage gridMap={gridMap} />
             <BackgroundGrid
@@ -92,8 +107,7 @@ export const PlayMap: FC<Props> = ({
 
             <DrawingCapturePane drawingService={notesDrawingService} />
             <DrawingCapturePane drawingService={backgroundDrawingService} />
-          </g>
-          {zoomActive && <ZoomPane battleMapService={battleMapService} />}
+          </Viewport>
         </svg>
       )}
     </>

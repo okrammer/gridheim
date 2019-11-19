@@ -15,6 +15,7 @@ import { Layout } from "./PlayPage/Layout";
 import { SessionStorage } from "../services/SessionStorage";
 import { GridMapStorage } from "../services/GridMapStorage";
 import { NoSessionsFound } from "./PlayPage/NoSessionsFound";
+import { ZoomModeService } from "./PlayPage/services/modebased/ZoomModeService";
 
 interface Props {
   gridMapStorage: GridMapStorage;
@@ -34,7 +35,7 @@ export const PlayPage: FC<Props> = ({
       gridMapStorage,
       sessionStorage
     );
-    const battleMapService = new BattleMapService(saveSessionService);
+    const battleMapService = new BattleMapService();
     const playModeService = new PlayModeService(battleMapService);
     const backgroundDrawingService = new DrawingService();
     const notesDrawingService = new DrawingService();
@@ -43,12 +44,13 @@ export const PlayPage: FC<Props> = ({
       battleMapService,
       assetService
     );
+    const zoomModeService = new ZoomModeService(battleMapService);
     const modeService = new ModeService("play", {
       play: playModeService,
       "draw-background": backgroundDrawingService,
       "draw-notes": notesDrawingService,
       "manage-token": manageTokenService,
-      zoom: null
+      zoom: zoomModeService
     });
 
     saveSessionService
@@ -107,7 +109,8 @@ export const PlayPage: FC<Props> = ({
       notesDrawingService,
       modeService,
       manageTokenService,
-      assetService
+      assetService,
+      saveSessionService
     });
     return () => {
       console.log("disposing PlayApp");
@@ -116,6 +119,7 @@ export const PlayPage: FC<Props> = ({
       playModeService.dispose();
       backgroundDrawingService.dispose();
       notesDrawingService.dispose();
+      zoomModeService.dispose();
       modeService.dispose();
       manageTokenService.dispose();
       assetService.dispose();

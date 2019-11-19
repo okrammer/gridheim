@@ -1,14 +1,21 @@
 import { ViewBox } from "../../../model/ViewBox";
 import { Token } from "../../../model/Token";
-import { BehaviorSubject, combineLatest, Observable } from "rxjs";
+import { BehaviorSubject, combineLatest, Observable, of } from "rxjs";
 import { Square } from "../../../model/Square";
 import produce, { Draft } from "immer";
 import { TokenType } from "../../../model/TokenType";
 import { uuid } from "../../../utils/uuid";
-import { debounceTime, map, throttleTime } from "rxjs/operators";
+import {
+  auditTime,
+  debounceTime,
+  map,
+  shareReplay,
+  throttleTime
+} from "rxjs/operators";
 import { AbstractService } from "../../../services/AbstractService";
 import { SaveSessionService } from "./SaveSessionService";
 import { range } from "../../../utils/range";
+import { windowAspectRatio } from "../../../utils/windowAspectRatio";
 
 export class BattleMapService extends AbstractService {
   private static readonly EMPTY_READONLY_ARRAY: ReadonlyArray<
@@ -18,8 +25,6 @@ export class BattleMapService extends AbstractService {
   private readonly tokensS$ = new BehaviorSubject<ReadonlyArray<Token>>([]);
 
   readonly tokens$ = this.tokensS$.asObservable();
-
-  readonly gridMap$ = this.sessionStorageService.gridMap$;
 
   private selectedTokenS$ = new BehaviorSubject<Token | null>(null);
   readonly selectedToken$ = this.selectedTokenS$.asObservable();
@@ -62,24 +67,6 @@ export class BattleMapService extends AbstractService {
     }),
     debounceTime(50)
   );
-
-  readonly viewBox$ = this.gridMap$.pipe(
-    map(map =>
-      map
-        ? new ViewBox(0, 0, map.getWidthInSquares(), map.getHeightInSquares())
-        : new ViewBox(0, 0, 0, 0)
-    )
-  );
-
-  private readonly scaleS$ = new BehaviorSubject(1);
-  readonly scale$ = this.scaleS$.asObservable().pipe(throttleTime(200));
-
-  private readonly positionS$ = new BehaviorSubject({ x: 0, y: 0 });
-  readonly position$ = this.positionS$.asObservable().pipe(throttleTime(200));
-
-  constructor(private readonly sessionStorageService: SaveSessionService) {
-    super();
-  }
 
   selectToken(token: Token | null): void {
     if (this.tokenSelectable) {
@@ -137,27 +124,6 @@ export class BattleMapService extends AbstractService {
 
   get tokenSelectable(): boolean {
     return this.tokenSelectableS$.value;
-  }
-
-  switchScale(factor: number): void {
-    this.scaleS$.next(1 + factor * 0.1);
-  }
-
-  get scale(): number {
-    return this.scaleS$.value;
-  }
-
-  get position(): { x: number; y: number } {
-    return this.positionS$.value;
-  }
-
-  get tokenSize(): number {
-    return this.tokenSizeS$.value;
-  }
-
-  movePosition(dx: number, dy: number): void {
-    const { x, y } = this.position;
-    this.positionS$.next({ x: x + dx, y: y + dy });
   }
 
   removeSelectedToken(): void {

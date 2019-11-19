@@ -16,5 +16,5 @@ export function pointInSvgFromEvent(
   const pointInSvg = svgPoint.matrixTransform(
     element.getScreenCTM()!.inverse()
   );
-  return pointInSvg;
+  return { x: pointInSvg.x, y: pointInSvg.y };
 }

@@ -22,7 +22,16 @@ export const DisplayToken: FC<Props> = ({
 }: Props) => {
   square = square || new Square(0, 0);
   return (
-    <g onClick={onClick}>
+    <g
+      onClick={e => {
+        if (onClick) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log("here");
+          onClick();
+        }
+      }}
+    >
       <circle
         className={`token ${tokenClasses ? classesMap(tokenClasses) : ""}`}
         fill={tokenType.color}

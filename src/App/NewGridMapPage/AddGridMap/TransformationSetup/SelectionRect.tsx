@@ -36,7 +36,7 @@ export const SelectionRect: FC<Props> = ({
     onStart: ({ x, y }) => {
       setSelectionRect({ x, y, a: 0 });
     },
-    onMove: ({ x, y }) => {
+    onMove: ({ current: { x, y } }) => {
       if (selectionRect) {
         const dx = x - selectionRect.x;
         const dy = y - selectionRect.y;
@@ -44,9 +44,7 @@ export const SelectionRect: FC<Props> = ({
         updateRect({ ...selectionRect, a });
       }
     },
-    onFinished: function(p) {
-      this.onMove(p);
-    },
+    onFinished: "useOnMove",
     onCancel: () => {
       updateRect(null);
     }
@@ -56,15 +54,12 @@ export const SelectionRect: FC<Props> = ({
     changeRect: (point: Point, rect: Rect) => Rect
   ): SvgDrag => {
     const cornerDragging = useDragSvg({
-      onStart: ({ x, y }) => {},
-      onMove: point => {
+      onMove: ({ current }) => {
         if (selectionRect) {
-          updateRect(changeRect(point, selectionRect));
+          updateRect(changeRect(current, selectionRect));
         }
       },
-      onFinished: function(p) {
-        this.onMove(p);
-      },
+      onFinished: "useOnMove",
       onCancel: () => {
         setSelectionRect(null);
       }
