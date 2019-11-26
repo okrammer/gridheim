@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-export const useStateRef = <T>(initial: T): [() => T, (v: T) => void] => {
+export const useStateRef = <T>(initial: T): [() => T, (v: T) => void, T] => {
   const ref = useRef<T>(initial);
   const [state, setState] = useState(ref.current);
   const set = (v: T): void => {
@@ -10,5 +10,5 @@ export const useStateRef = <T>(initial: T): [() => T, (v: T) => void] => {
   const get = (): T => {
     return ref.current;
   };
-  return [get, set];
+  return [get, set, state];
 };

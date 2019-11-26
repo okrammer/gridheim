@@ -3,7 +3,7 @@ import { Transformation } from "../../../model/Transformation";
 import { PlaceSquare } from "./TransformationSetup/PlaceSquare";
 import { PreviewGrid } from "./TransformationSetup/PreviewGrid";
 import { BackgroundImage } from "../../../model/BackgroundImage";
-import { Rect } from "../../../utils/types";
+import { Rect } from "../../../utils/Rect";
 
 interface Props {
   image: BackgroundImage;
@@ -22,24 +22,24 @@ export const TransformationSetup: FC<Props> = ({
   );
 
   const calculateTransformation = (r1: Rect, r2: Rect): Transformation => {
-    const averageA = (r1.a + r2.a) / 2;
+    const averageA = (r1.sideLength + r2.sideLength) / 2;
 
-    const distanceX = Math.abs(r2.x - r1.x);
+    const distanceX = Math.abs(r2.topLeft.x - r1.topLeft.x);
     const squareCountX = Math.round(distanceX / averageA);
     const calculatedAX = distanceX / squareCountX;
 
-    const distanceY = Math.abs(r2.y - r1.y);
+    const distanceY = Math.abs(r2.topLeft.y - r1.topLeft.y);
     const squareCountY = Math.round(distanceY / averageA);
     const calculatedAY = distanceY / squareCountY;
 
     const calculatedA = (calculatedAX + calculatedAY) / 2;
 
-    const dx1 = -r1.x % calculatedA;
-    const dx2 = -r2.x % calculatedA;
+    const dx1 = -r1.topLeft.x % calculatedA;
+    const dx2 = -r2.topLeft.x % calculatedA;
     const dx = (dx1 + dx2) / 2;
 
-    const dy1 = -r1.y % calculatedA;
-    const dy2 = -r2.y % calculatedA;
+    const dy1 = -r1.topLeft.y % calculatedA;
+    const dy2 = -r2.topLeft.y % calculatedA;
     const dy = (dy1 + dy2) / 2;
 
     return Transformation.of({ scale: 1 / calculatedA, dx, dy });

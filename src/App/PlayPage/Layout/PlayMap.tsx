@@ -14,9 +14,6 @@ import { combineLatest } from "rxjs";
 import { BackgroundGrid } from "./PlayMap/BackgroundGrid";
 import { SelectionGrid } from "./PlayMap/SelectionGrid";
 import { ViewBox } from "../../../model/ViewBox";
-import { pointInSvgFromEvent } from "../../../utils/pointInSvgFromEvent";
-import { Point } from "../../../utils/types";
-import { useStateRef } from "../../../utils/useStateRef";
 import { windowAspectRatio } from "../../../utils/windowAspectRatio";
 import { SaveSessionService } from "../services/SaveSessionService";
 

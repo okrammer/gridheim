@@ -1,8 +1,11 @@
-import React, { FC, ReactNode, useEffect, useRef } from "react";
+import React, { FC, ReactNode, useEffect, useRef, useState } from "react";
 import { useStateRef } from "../../../../utils/useStateRef";
 import { pointInSvgFromEvent } from "../../../../utils/pointInSvgFromEvent";
 import { useDragSvg } from "../../../../utils/useDragSvg";
 import { classesMap } from "../../../../utils/classesMap";
+import { Vector } from "../../../../utils/Vector";
+import { useTouch } from "../../../../utils/useTouch";
+import { newSessionAction } from "../../../StartPage/actions/NewSessionAction";
 
 interface Props {
   draggingEnabled: boolean;
@@ -16,9 +19,10 @@ export const Viewport: FC<Props> = ({
   draggingEnabled
 }: Props) => {
   const groupRef = useRef<SVGGraphicsElement | null>(null);
+  const outerGroupRef = useRef<SVGGraphicsElement | null>(null);
 
-  const [getTransformation, setTransformation] = useStateRef({
-    translate: { x: 0, y: 0 },
+  const [getTransformation, setTransformation, transformation] = useStateRef({
+    translate: Vector.zero,
     scale: initialScale
   });
   useEffect(() => {
@@ -29,21 +33,22 @@ export const Viewport: FC<Props> = ({
       const mousePosition = pointInSvgFromEvent(e as any, groupRef.current!);
 
       const t = getTransformation();
-      const newScale = t.scale - t.scale * e.deltaY * 0.01;
+      if (e.ctrlKey) {
+        const newScale = t.scale - t.scale * e.deltaY * 0.01;
 
-      setTransformation({
-        scale: newScale,
-        translate: {
-          x:
-            t.translate.x -
-            mousePosition.x * newScale +
-            mousePosition.x * t.scale,
-          y:
-            t.translate.y -
-            mousePosition.y * newScale +
-            mousePosition.y * t.scale
-        }
-      });
+        setTransformation({
+          scale: newScale,
+          translate: t.translate
+            .subtract(mousePosition.scale(newScale))
+            .add(mousePosition.scale(t.scale))
+        });
+      } else {
+        const delta = Vector.fromDeltaCoords(e);
+        setTransformation({
+          scale: t.scale,
+          translate: t.translate.subtract(delta.scale(0.01))
+        });
+      }
     };
     document.addEventListener("wheel", onWheel, { passive: false });
 
@@ -54,29 +59,59 @@ export const Viewport: FC<Props> = ({
 
   const drag = useDragSvg({
     onMove: e => {
-      const dx = e.current.x - e.last.x;
-      const dy = e.current.y - e.last.y;
       const t = getTransformation();
       setTransformation({
         scale: t.scale,
-        translate: { x: t.translate.x + dx, y: t.translate.y + dy }
+        translate: t.translate.add(e.delta)
       });
     }
   });
 
-  const t = getTransformation();
+  const multiTouch = useTouch({
+    onMove: e => {
+      const t = getTransformation();
+      const scaleFactor =
+        e.current.distance && e.last.distance
+          ? e.current.distance / e.last.distance
+          : 1;
+
+      const oldPointOnMap = e.current.position
+        .subtract(t.translate)
+        .scale(1 / t.scale);
+
+      const newPointOnMap = e.current.position
+        .subtract(t.translate)
+        .scale(1 / (t.scale * scaleFactor));
+
+      const newT = {
+        scale: t.scale * scaleFactor,
+        translate: t.translate
+          .add(
+            newPointOnMap.subtract(oldPointOnMap).scale(t.scale * scaleFactor)
+          )
+          .add(e.current.position.subtract(e.last.position))
+      };
+      setTransformation(newT);
+    },
+    svgTargetRef: outerGroupRef
+  });
 
   return (
     <>
       <g
         {...(draggingEnabled ? drag.eventHandler : {})}
+        {...multiTouch.eventHandlers}
         className={classesMap({
           viewport: draggingEnabled,
           viewport_dragging: drag.dragging
         })}
+        ref={outerGroupRef}
       >
         <g
-          transform={`translate(${t.translate.x} ${t.translate.y}) scale(${t.scale}, ${t.scale})`}
+          transform={
+            `translate(${transformation.translate.x} ${transformation.translate.y})` +
+            `scale(${transformation.scale}, ${transformation.scale})`
+          }
         >
           <g ref={groupRef}>{children}</g>
         </g>

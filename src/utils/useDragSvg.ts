@@ -1,18 +1,19 @@
-import { Point } from "./types";
 import { PointerEvent as ReactPointerEvent, useRef, useState } from "react";
 import { pointInSvgFromEvent } from "./pointInSvgFromEvent";
-import { pointDistance } from "./pointDistance";
+import { Vector } from "./Vector";
+
+const CLICK_TIMEOUT_MILLIS = 300;
+
 export interface DraggingEvent {
-  current: Point;
-  last: Point;
-  start: Point;
+  current: Vector;
+  last: Vector;
+  delta: Vector;
 }
+
 export interface SvgDraggingConfig {
-  onStart?: (this: SvgDraggingConfig, start: Point) => void;
-  onMove: (this: SvgDraggingConfig, e: DraggingEvent) => void;
-  onFinished?:
-    | ((this: SvgDraggingConfig, e: DraggingEvent) => void)
-    | "useOnMove";
+  onStart?: (startPoint: Vector) => void;
+  onMove: (e: DraggingEvent) => void;
+  onEnd?: () => void;
   onCancel?: () => void;
 }
 
@@ -26,8 +27,7 @@ export interface SvgDrag {
 export const useDragSvg = (config: SvgDraggingConfig): SvgDrag => {
   const draggingRef = useRef(false);
   const [returnedDragging, setReturnedDragging] = useState(false);
-  const startPoint = useRef<Point | null>(null);
-  const lastPoint = useRef<Point | null>(null);
+  const lastPoint = useRef<Vector | null>(null);
   const configRef = useRef(config);
   configRef.current = config;
 
@@ -39,9 +39,10 @@ export const useDragSvg = (config: SvgDraggingConfig): SvgDrag => {
   const onPointerDown = (e: ReactPointerEvent<SVGGraphicsElement>): void => {
     const svgTarget = e.currentTarget;
     const point = pointInSvgFromEvent(e);
+    const startTime = Date.now();
     if (!draggingRef.current) {
       setDragging(true);
-      startPoint.current = point;
+      lastPoint.current = point;
       if (configRef.current.onStart) {
         configRef.current.onStart(point);
       }
@@ -54,35 +55,16 @@ export const useDragSvg = (config: SvgDraggingConfig): SvgDrag => {
         });
         configRef.current.onMove({
           current: point,
-          start: startPoint.current!,
-          last: lastPoint.current || startPoint.current!
+          last: lastPoint.current!,
+          delta: point.subtract(lastPoint.current!)
         });
         lastPoint.current = point;
       };
 
       const onPointerUp = (e: PointerEvent): void => {
-        const point = pointInSvgFromEvent({
-          clientX: e.clientX,
-          clientY: e.clientY,
-          currentTarget: svgTarget
-        });
-
-        const d = startPoint.current
-          ? pointDistance(startPoint.current, point)
-          : -1;
-
-        if (d > 0.5) {
-          if (configRef.current.onFinished) {
-            const fn =
-              configRef.current.onFinished === "useOnMove"
-                ? configRef.current.onMove
-                : configRef.current.onFinished;
-
-            fn.bind(configRef.current)({
-              current: point,
-              start: startPoint.current!,
-              last: lastPoint.current || startPoint.current!
-            });
+        if (Date.now() - startTime > CLICK_TIMEOUT_MILLIS) {
+          if (configRef.current.onEnd) {
+            configRef.current.onEnd();
           }
 
           setDragging(false);

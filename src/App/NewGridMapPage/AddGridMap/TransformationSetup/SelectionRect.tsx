@@ -1,13 +1,8 @@
 import React, { FC, useState } from "react";
 import { range } from "../../../../utils/range";
-import { Point } from "../../../../utils/types";
 import { SvgDrag, useDragSvg } from "../../../../utils/useDragSvg";
-
-export interface Rect {
-  x: number;
-  y: number;
-  a: number;
-}
+import { Vector } from "../../../../utils/Vector";
+import { Rect } from "../../../../utils/Rect";
 
 interface Props {
   width: number;
@@ -23,9 +18,13 @@ export const SelectionRect: FC<Props> = ({
   const [selectionRect, setSelectionRect] = useState<Rect | null>(null);
   const updateRect = (rect: Rect | null): void => {
     setSelectionRect(rect);
+    const r = rect && rect.normalized;
     onChange(
-      rect
-        ? { x: rect.x + rect.a / 3, y: rect.y + rect.a / 3, a: rect.a / 3 }
+      r
+        ? new Rect(
+            r.topLeft.add(Vector.fromNumber(r.sideLength / 3)),
+            r.sideLength / 3
+          )
         : null
     );
   };
@@ -33,25 +32,22 @@ export const SelectionRect: FC<Props> = ({
   const strokeSize = width / 600;
 
   const dragRect = useDragSvg({
-    onStart: ({ x, y }) => {
-      setSelectionRect({ x, y, a: 0 });
+    onStart: startPoint => {
+      setSelectionRect(new Rect(startPoint, 0));
     },
-    onMove: ({ current: { x, y } }) => {
+    onMove: ({ current }) => {
       if (selectionRect) {
-        const dx = x - selectionRect.x;
-        const dy = y - selectionRect.y;
-        const a = Math.max(0, Math.max(dx, dy));
-        updateRect({ ...selectionRect, a });
+        const d = current.subtract(selectionRect.topLeft).maxComponent;
+        updateRect(selectionRect.withSideLength(d));
       }
     },
-    onFinished: "useOnMove",
     onCancel: () => {
       updateRect(null);
     }
   });
 
   const useDragCorner = (
-    changeRect: (point: Point, rect: Rect) => Rect
+    changeRect: (point: Vector, rect: Rect) => Rect
   ): SvgDrag => {
     const cornerDragging = useDragSvg({
       onMove: ({ current }) => {
@@ -59,7 +55,6 @@ export const SelectionRect: FC<Props> = ({
           updateRect(changeRect(current, selectionRect));
         }
       },
-      onFinished: "useOnMove",
       onCancel: () => {
         setSelectionRect(null);
       }
@@ -69,40 +64,16 @@ export const SelectionRect: FC<Props> = ({
 
   const dragCornerMatrix = [
     [
-      useDragCorner(({ x, y }, rect) => {
-        const d = Math.max(rect.x - x, rect.y - y);
-        return {
-          x: rect.x - d,
-          y: rect.y - d,
-          a: rect.a + d
-        };
-      }),
-      useDragCorner(({ x, y }, rect) => {
-        const d = Math.max(rect.x - x, y - rect.y - rect.a);
-        return {
-          ...rect,
-          x: rect.x - d,
-          a: rect.a + d
-        };
-      })
+      useDragCorner((p, rect) => rect.moveTopLeftTo(p)),
+      useDragCorner((p, rect) => rect.moveBottomLeftTo(p))
     ],
     [
-      useDragCorner(({ x, y }, rect) => {
-        const d = Math.max(x - rect.x - rect.a, rect.y - y);
-        return {
-          ...rect,
-          y: rect.y - d,
-          a: rect.a + d
-        };
-      }),
-      useDragCorner(({ x, y }, rect) => {
-        return {
-          ...rect,
-          a: Math.max(x - rect.x, y - rect.y)
-        };
-      })
+      useDragCorner((p, rect) => rect.moveTopRightTo(p)),
+      useDragCorner((p, rect) => rect.moveBottomRightTo(p))
     ]
   ];
+
+  const r = selectionRect && selectionRect.normalized;
 
   return (
     <g>
@@ -114,16 +85,16 @@ export const SelectionRect: FC<Props> = ({
         height={height}
         {...dragRect.eventHandler}
       />
-      {selectionRect && (
+      {r && (
         <g>
           {range(3).flatMap(x =>
             range(3).map(y => (
               <rect
                 key={`${x}/${y}`}
-                x={selectionRect.x + (x * selectionRect.a) / 3}
-                y={selectionRect.y + (y * selectionRect.a) / 3}
-                width={selectionRect.a / 3}
-                height={selectionRect.a / 3}
+                x={r.topLeft.x + (x * r.sideLength) / 3}
+                y={r.topLeft.y + (y * r.sideLength) / 3}
+                width={r.sideLength / 3}
+                height={r.sideLength / 3}
                 stroke={dragRect.dragging ? "#0f86ff" : "red"}
                 fillOpacity={0}
                 strokeDasharray={`${strokeSize} ${strokeSize}`}
@@ -132,16 +103,25 @@ export const SelectionRect: FC<Props> = ({
             ))
           )}
           {!dragRect.dragging &&
+            selectionRect &&
             range(2).flatMap(x =>
               range(2).map(y => {
                 const drag = dragCornerMatrix[x][y];
                 return (
                   <rect
                     key={`${x}/${y}`}
-                    x={selectionRect.x + x * selectionRect.a - strokeSize * 2}
-                    y={selectionRect.y + y * selectionRect.a - strokeSize * 2}
-                    width={strokeSize * 4}
-                    height={strokeSize * 4}
+                    x={
+                      selectionRect.topLeft.x +
+                      x * selectionRect.sideLength -
+                      strokeSize * 3
+                    }
+                    y={
+                      selectionRect.topLeft.y +
+                      y * selectionRect.sideLength -
+                      strokeSize * 3
+                    }
+                    width={strokeSize * 6}
+                    height={strokeSize * 6}
                     strokeOpacity={0}
                     fill={drag.dragging ? "#0f86ff" : "red"}
                     {...drag.eventHandler}

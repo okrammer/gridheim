@@ -4,8 +4,8 @@ import Octicon, { Check } from "@primer/octicons-react";
 import { BackgroundImage } from "../../../../model/BackgroundImage";
 import { ExplanationBox } from "../../../../common/ExplanationBox";
 import { SelectionRect } from "./SelectionRect";
-import { Rect } from "../../../../utils/types";
 import { ViewControls } from "./common/ViewControls";
+import { Rect } from "../../../../utils/Rect";
 
 const viewPositionToLabel = {
   center: "center",
