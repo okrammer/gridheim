@@ -11,12 +11,14 @@ interface Props {
   draggingEnabled: boolean;
   initialScale: number;
   children: ReactNode;
+  touchEnabled: boolean;
 }
 
 export const Viewport: FC<Props> = ({
   initialScale,
   children,
-  draggingEnabled
+  draggingEnabled,
+  touchEnabled
 }: Props) => {
   const groupRef = useRef<SVGGraphicsElement | null>(null);
   const outerGroupRef = useRef<SVGGraphicsElement | null>(null);
@@ -100,7 +102,7 @@ export const Viewport: FC<Props> = ({
     <>
       <g
         {...(draggingEnabled ? drag.eventHandler : {})}
-        {...multiTouch.eventHandlers}
+        {...(touchEnabled ? multiTouch.eventHandlers : {})}
         className={classesMap({
           viewport: draggingEnabled,
           viewport_dragging: drag.dragging

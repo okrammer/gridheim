@@ -41,6 +41,12 @@ export const PlayMap: FC<Props> = ({
     false
   );
 
+  // disable touch when drawing
+  const touchEnabled = useObservable(
+    modeService.mode$.pipe(map(is("play", "manage-token", "zoom"))),
+    false
+  );
+
   const squareSelectable = useObservable(
     combineLatest([
       battleMapService.squareSelectable$,
@@ -73,6 +79,7 @@ export const PlayMap: FC<Props> = ({
           <Viewport
             initialScale={initialScale}
             draggingEnabled={draggingEnabled}
+            touchEnabled={touchEnabled}
           >
             <DisplayBackgroundImage gridMap={gridMap} />
             <BackgroundGrid
