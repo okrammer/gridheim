@@ -1,15 +1,11 @@
 import { Vector } from "./Vector";
+import { toSvgPoint } from "./toSvgPoint";
 
 export function toVectorInSvg(
   clientVector: Vector,
   target: SVGGraphicsElement
 ): Vector {
   const element = target!;
-  const svgPoint = element.ownerSVGElement!.createSVGPoint();
-  svgPoint.x = clientVector.x;
-  svgPoint.y = clientVector.y;
-  const pointInSvg = svgPoint.matrixTransform(
-    element.getScreenCTM()!.inverse()
-  );
-  return Vector.fromCoords(pointInSvg);
+  const svgPoint = toSvgPoint(clientVector, element);
+  return Vector.fromCoords(svgPoint);
 }

@@ -149,15 +149,6 @@ code {
   stroke: $draw-color-orange;
 }
 
-.drawing.current {
-}
-
-.drawing-pane.erase .drawing:hover {
-  stroke-width: 0.2;
-  opacity: 0.5;
-
-}
-
 .logo-button {
   border-radius: 0px 0px 30px 0px;
   height: 60px;

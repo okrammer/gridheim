@@ -22,7 +22,6 @@ export const DrawingCapturePane: FC<Props> = ({ drawingService }: Props) => {
 
     pointSubject.complete();
     setPointSubject(null);
-    e.currentTarget.releasePointerCapture(e.pointerId);
   };
 
   const onMouseMove = (e: PointerEvent<SVGRectElement>): void => {
@@ -37,7 +36,6 @@ export const DrawingCapturePane: FC<Props> = ({ drawingService }: Props) => {
     if (!drawingService.active) {
       return;
     }
-    e.currentTarget.setPointerCapture(e.pointerId);
 
     const subject = new Subject<[number, number]>();
     setPointSubject(subject);

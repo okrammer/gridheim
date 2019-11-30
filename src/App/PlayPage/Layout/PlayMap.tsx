@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, PointerEvent } from "react";
 import { BattleMapService } from "../services/BattleMapService";
 import { DisplayBackgroundImage } from "./PlayMap/DisplayBackgroundImage";
 import { DisplayTokens } from "./PlayMap/DisplayTokens";
@@ -52,10 +52,16 @@ export const PlayMap: FC<Props> = ({
     []
   );
 
+  const onPointerMove = (e: PointerEvent<any>): void => {};
+
   return (
     <>
       {gridMap && viewBox && (
-        <svg className="h-100 w-100" viewBox={viewBox.toViewBoxString()}>
+        <svg
+          className="h-100 w-100"
+          viewBox={viewBox.toViewBoxString()}
+          onPointerMove={onPointerMove}
+        >
           <Viewport viewportService={viewportService}>
             {gridMap instanceof ImageGridMap && (
               <DisplayBackgroundImage gridMap={gridMap} />
