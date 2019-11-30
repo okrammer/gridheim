@@ -5,6 +5,7 @@ import { DrawingService } from "./modebased/DrawingService";
 import { ManageTokenService } from "./modebased/ManageTokenService";
 import { AssetService } from "./AssetService";
 import { SaveSessionService } from "./SaveSessionService";
+import { ViewportService } from "./ViewportService";
 
 export interface Services {
   modeService: ModeService;
@@ -15,4 +16,5 @@ export interface Services {
   manageTokenService: ManageTokenService;
   assetService: AssetService;
   saveSessionService: SaveSessionService;
+  viewportService: ViewportService;
 }

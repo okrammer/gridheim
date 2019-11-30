@@ -5,19 +5,23 @@ import { ManageTokenService } from "../services/modebased/ManageTokenService";
 import { DrawingControlBar } from "./ControlBar/DrawingControlBar";
 import { ModeControlBar } from "./ControlBar/ModeControlBar";
 import { ManageTokenControlBar } from "./ControlBar/ManageTokenControlBar";
+import { ViewportControlBar } from "./ControlBar/ViewportControlBar";
+import { ViewportService } from "../services/ViewportService";
 
 interface Props {
   modeService: ModeService;
   backgroundDrawingService: DrawingService;
   notesDrawingService: DrawingService;
   manageTokenService: ManageTokenService;
+  viewportService: ViewportService;
 }
 
 export const ControlBar: FC<Props> = ({
   modeService,
   notesDrawingService,
   backgroundDrawingService,
-  manageTokenService
+  manageTokenService,
+  viewportService
 }: Props) => {
   return (
     <div className="navbar navbar-dark bg-dark control-pane">
@@ -25,6 +29,7 @@ export const ControlBar: FC<Props> = ({
       <DrawingControlBar drawingService={notesDrawingService} />
       <DrawingControlBar drawingService={backgroundDrawingService} />
       <ManageTokenControlBar manageTokenService={manageTokenService} />
+      <ViewportControlBar viewportService={viewportService} />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { FC, useContext, useState } from "react";
-import { GridMap } from "../../model/GridMap";
+import { ImageGridMap } from "../../model/ImageGridMap";
 import { ImageUpload } from "./AddGridMap/ImageUpload";
 import { BackgroundImage as ImageModel } from "../../model/BackgroundImage";
 import { Transformation } from "../../model/Transformation";
@@ -10,7 +10,7 @@ import Octicon, { X } from "@primer/octicons-react";
 import { ResetScrolling } from "../../common/FullPageWithHeading";
 
 interface Props {
-  onSave: (gridMapImage: GridMap) => void;
+  onSave: (gridMapImage: ImageGridMap) => void;
   onCancel: () => void;
 }
 
@@ -32,7 +32,7 @@ export const NewGridMap: FC<Props> = ({ onSave, onCancel }: Props) => {
     if (!name || !image || !transformation) {
       return;
     }
-    onSave(GridMap.of({ name, image, transformation }));
+    onSave(new ImageGridMap(name, image, transformation));
   };
 
   const setImageFromUrl = (url: string): void => {

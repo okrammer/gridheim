@@ -2,9 +2,10 @@ import React, { FC, useState } from "react";
 import { StepIndicator } from "../../common/StepIndicator";
 import { Session } from "../../model/Session";
 import { GridMapList } from "../../common/GridMapList";
-import { GridMap } from "../../model/GridMap";
-import Octicon, { Tag, X } from "@primer/octicons-react";
+import { ImageGridMap } from "../../model/ImageGridMap";
+import Octicon, { Check, Tag, X } from "@primer/octicons-react";
 import { ExplanationBox } from "../../common/ExplanationBox";
+import { GridMap } from "../../model/GridMap";
 
 interface Props {
   onSave: (session: Session) => void;
@@ -63,14 +64,21 @@ export const StartSession: FC<Props> = ({
                 Select a map where you want to play from the list below ...
               </ExplanationBox>
 
-              <GridMapList
-                gridMaps={gridMaps}
-                selected={null}
-                onSelect={gridMap => {
-                  setBackgroundName(gridMap.name);
-                  setStep(steps.metadata);
-                }}
-              />
+              <GridMapList gridMaps={gridMaps}>
+                {gridMap => (
+                  <button
+                    className="btn btn-success"
+                    type="button"
+                    onClick={() => {
+                      setBackgroundName(gridMap.name);
+                      setStep(steps.metadata);
+                    }}
+                  >
+                    <Octicon icon={Check} />
+                    &nbsp; Use this map
+                  </button>
+                )}
+              </GridMapList>
             </div>
           </div>
         )}

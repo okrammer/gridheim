@@ -2,13 +2,13 @@ import { Action } from "../Action";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { routing } from "../../../App";
-import { GridMapStorage } from "../../../services/GridMapStorage";
 import { labels } from "../../../data/labels";
+import { ImageGridMapRepository } from "../../../services/ImageGridMapRepository";
 
 export const showGridMapsAction = (
-  gridMapStorage: GridMapStorage
+  imageGridMapRepository: ImageGridMapRepository
 ): Observable<Action | null> => {
-  return gridMapStorage.count().pipe(
+  return imageGridMapRepository.count().pipe(
     map(count => {
       if (count === 0) {
         return null;

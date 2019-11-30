@@ -3,7 +3,7 @@ import { Session } from "../model/Session";
 import { Observable, of } from "rxjs";
 import { flatMap, map } from "rxjs/operators";
 
-export class SessionStorage extends AbstractStorage<Session, string> {
+export class SessionRepository extends AbstractStorage<Session, string> {
   protected readonly isStorageKey = (key: string): boolean =>
     Session.isStorageKey(key);
 

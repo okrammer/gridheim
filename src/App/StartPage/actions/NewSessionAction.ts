@@ -1,25 +1,13 @@
 import { Action } from "../Action";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { Observable, of } from "rxjs";
 import { routing } from "../../../App";
-import { GridMapStorage } from "../../../services/GridMapStorage";
 import { labels } from "../../../data/labels";
 
-export const newSessionAction = (
-  gridMapStorage: GridMapStorage
-): Observable<Action | null> => {
-  return gridMapStorage.count().pipe(
-    map(count => {
-      if (count === 0) {
-        return null;
-      }
-
-      return {
-        to: routing.newSessions,
-        descriptionText: labels.startPage.newSession.description,
-        actionText: labels.startPage.newSession.button,
-        section: "play"
-      };
-    })
-  );
+export const newSessionAction = (): Observable<Action | null> => {
+  return of({
+    to: routing.newSessions,
+    descriptionText: labels.startPage.newSession.description,
+    actionText: labels.startPage.newSession.button,
+    section: "play"
+  });
 };

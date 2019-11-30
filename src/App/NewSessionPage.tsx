@@ -1,8 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { FullPageWithHeading } from "../common/FullPageWithHeading";
-import { SessionStorage } from "../services/SessionStorage";
-import { GridMapStorage } from "../services/GridMapStorage";
-import { GridMap } from "../model/GridMap";
+import { SessionRepository } from "../services/SessionRepository";
 import { Dict } from "../utils/types";
 import { Repo } from "@primer/octicons-react";
 import { StartSession } from "./SessionsPage/StartSession";
@@ -13,27 +11,30 @@ import { PageHeader } from "../common/PageHeader";
 import { routing } from "../App";
 import { useNavigation } from "../utils/useNavigation";
 import { labels } from "../data/labels";
+import { GridMapService } from "../services/GridMapService";
+import { GridMap } from "../model/GridMap";
 
 interface Props {
-  sessionStorage: SessionStorage;
-  gridMapStorage: GridMapStorage;
+  sessionRepository: SessionRepository;
+  gridMapService: GridMapService;
 }
 
 export const NewSessionPage: FC<Props> = ({
-  sessionStorage,
-  gridMapStorage
+  sessionRepository,
+
+  gridMapService
 }: Props) => {
   const [gridMapsForName, setGridMapForName] = useState<
     Readonly<Dict<GridMap>>
   >({});
 
   useEffect(() => {
-    gridMapStorage.findAll().subscribe({
+    gridMapService.getGridMaps().subscribe({
       next: gridMaps => {
         setGridMapForName(arrayToDict(gridMaps, gridMap => gridMap.name));
       }
     });
-  }, [gridMapStorage, sessionStorage]);
+  }, [gridMapService, sessionRepository]);
 
   const [navigateToStart, navigateToPlay] = useNavigation(
     routing.start,
@@ -55,8 +56,8 @@ export const NewSessionPage: FC<Props> = ({
           <div className="col-md-12">
             <StartSession
               onSave={session => {
-                sessionStorage.store(session);
-                sessionStorage.storeCurrentSessionName(session.name);
+                sessionRepository.store(session);
+                sessionRepository.storeCurrentSessionName(session.name);
                 navigateToPlay();
               }}
               onCancel={() => {

@@ -1,45 +1,30 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { GridMapStorage } from "../services/GridMapStorage";
-import { GridMap } from "../model/GridMap";
+import { ImageGridMap } from "../model/ImageGridMap";
 import { GridMapList } from "../common/GridMapList";
 import { FullPageWithHeading } from "../common/FullPageWithHeading";
 import Octicon, { FileMedia, Trashcan } from "@primer/octicons-react";
 import { ExplanationBox } from "../common/ExplanationBox";
 import { PageHeaderWithButtons } from "../common/PageHeaderWithButtons";
+import { ImageGridMapRepository } from "../services/ImageGridMapRepository";
 
 interface Props {
-  gridMapStorage: GridMapStorage;
+  imageGridMapRepository: ImageGridMapRepository;
 }
 
-export const GridMapsPage: FC<Props> = ({ gridMapStorage }: Props) => {
-  const [selected, setSelected] = useState<GridMap | null>(null);
-  const [gridMaps, setGridMaps] = useState<ReadonlyArray<GridMap>>([]);
+export const GridMapsPage: FC<Props> = ({ imageGridMapRepository }: Props) => {
+  const [selected, setSelected] = useState<ImageGridMap | null>(null);
+  const [gridMaps, setGridMaps] = useState<ReadonlyArray<ImageGridMap>>([]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const reload = useCallback((): void => {
-    gridMapStorage.findAll().subscribe({ next: setGridMaps });
-  }, [gridMapStorage]);
+    imageGridMapRepository.findAll().subscribe({ next: setGridMaps });
+  }, [imageGridMapRepository]);
   useEffect(() => {
     reload();
   }, [reload]);
 
   const heading = (
     <PageHeaderWithButtons icon={FileMedia} headline="Manage Maps">
-      {selected && (
-        <>
-          <button
-            type="button"
-            className="btn btn-danger ml-2"
-            onClick={() => {
-              gridMapStorage.delete(selected.name);
-              setSelected(null);
-              reload();
-            }}
-          >
-            <Octicon icon={Trashcan} />
-            Delete Selected Map
-          </button>
-        </>
-      )}
+      {selected && <></>}
     </PageHeaderWithButtons>
   );
 
@@ -55,11 +40,22 @@ export const GridMapsPage: FC<Props> = ({ gridMapStorage }: Props) => {
         </ExplanationBox>
         <div>
           <div className="col-md-12">
-            <GridMapList
-              gridMaps={gridMaps}
-              selected={selected}
-              onSelect={setSelected}
-            />
+            <GridMapList gridMaps={gridMaps}>
+              {gridMap => (
+                <button
+                  type="button"
+                  className="btn btn-danger ml-2"
+                  onClick={() => {
+                    imageGridMapRepository.delete(gridMap.name);
+                    setSelected(null);
+                    reload();
+                  }}
+                >
+                  <Octicon icon={Trashcan} />
+                  &nbsp; Delete Map
+                </button>
+              )}
+            </GridMapList>
           </div>
         </div>
       </FullPageWithHeading>

@@ -1,9 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { FullPageWithHeading } from "../common/FullPageWithHeading";
 import { Session } from "../model/Session";
-import { SessionStorage } from "../services/SessionStorage";
-import { GridMapStorage } from "../services/GridMapStorage";
-import { GridMap } from "../model/GridMap";
+import { SessionRepository } from "../services/SessionRepository";
 import { Dict } from "../utils/types";
 import Octicon, { Play, Repo, Trashcan } from "@primer/octicons-react";
 import { SessionList } from "./SessionsPage/SessionList";
@@ -13,15 +11,17 @@ import { arrayToDict } from "../utils/arrayToDict";
 import { PageHeader } from "../common/PageHeader";
 import { useNavigation } from "../utils/useNavigation";
 import { routing } from "../App";
+import { GridMapService } from "../services/GridMapService";
+import { GridMap } from "../model/GridMap";
 
 interface Props {
-  gridMapStorage: GridMapStorage;
-  sessionStorage: SessionStorage;
+  gridMapService: GridMapService;
+  sessionRepository: SessionRepository;
 }
 
 export const SessionsPage: FC<Props> = ({
-  gridMapStorage,
-  sessionStorage
+  gridMapService,
+  sessionRepository
 }: Props) => {
   const [sessions, setSessions] = useState<ReadonlyArray<Session>>([]);
   const [gridMapsForName, setGridMapForName] = useState<
@@ -30,16 +30,15 @@ export const SessionsPage: FC<Props> = ({
 
   const reload = useCallback((): void => {
     combineLatest([
-      sessionStorage.findAll(),
-      gridMapStorage.findAll(),
-      sessionStorage.findCurrentSessionName()
+      sessionRepository.findAll(),
+      gridMapService.getGridMaps()
     ]).subscribe({
-      next: ([sessions, gridMaps, sessionName]) => {
+      next: ([sessions, gridMaps]) => {
         setSessions(sessions);
         setGridMapForName(arrayToDict(gridMaps, gridMap => gridMap.name));
       }
     });
-  }, [sessionStorage, gridMapStorage]);
+  }, [sessionStorage, gridMapService]);
 
   useEffect(() => {
     reload();
@@ -72,7 +71,7 @@ export const SessionsPage: FC<Props> = ({
                   }}
                 >
                   <Octicon icon={Play} />
-                  Start Session
+                  &nbsp; Start Session
                 </button>
                 <button
                   type="button"
@@ -83,7 +82,7 @@ export const SessionsPage: FC<Props> = ({
                   }}
                 >
                   <Octicon icon={Trashcan} />
-                  Delete Session
+                  &nbsp; Delete Session
                 </button>
               </>
             )}

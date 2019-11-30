@@ -4,8 +4,9 @@ import { MediaContainer } from "../../common/media/MediaContainer";
 import { MediaBody } from "../../common/media/MediaBody";
 import { ListGroup } from "../../common/listgroup/ListGroup";
 import { Session } from "../../model/Session";
-import { GridMap } from "../../model/GridMap";
+import { ImageGridMap } from "../../model/ImageGridMap";
 import { Dict } from "../../utils/types";
+import { GridMap } from "../../model/GridMap";
 
 interface Props {
   sessions: ReadonlyArray<Session>;
@@ -33,8 +34,8 @@ export const SessionList: FC<Props> = ({
                     <>
                       <dt className="col-sm-3">Map</dt>
                       <dd className="col-sm-9">
-                        {gridMap.name} ({gridMap.getWidthInSquares()}x
-                        {gridMap.getHeightInSquares()})
+                        {gridMap.name} ({gridMap.widthInSquares}x
+                        {gridMap.heightInSquares})
                       </dd>
                     </>
                   )}
@@ -49,7 +50,7 @@ export const SessionList: FC<Props> = ({
                 )}
                 <div>{children && children(session)}</div>
               </MediaBody>
-              {gridMap && (
+              {gridMap && gridMap instanceof ImageGridMap && (
                 <img
                   src={gridMap.image.url}
                   className="img-thumbnail image-200"

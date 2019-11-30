@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import { GridMapStorage } from "../services/GridMapStorage";
 import { FullPageWithHeading } from "../common/FullPageWithHeading";
 import { NewGridMap } from "./NewGridMapPage/NewGridMap";
 import { FileMedia } from "@primer/octicons-react";
@@ -7,13 +6,16 @@ import { ExplanationBox } from "../common/ExplanationBox";
 import { PageHeader } from "../common/PageHeader";
 import { useRouter } from "../utils/useRouter";
 import { routing } from "../App";
+import { ImageGridMapRepository } from "../services/ImageGridMapRepository";
 
 interface Props {
-  gridMapStorage: GridMapStorage;
+  imageGridMapRepository: ImageGridMapRepository;
 }
 
-export const NewGridMapPage: FC<Props> = ({ gridMapStorage }: Props) => {
-  const heading = <PageHeader icon={FileMedia} headline="Add Map"></PageHeader>;
+export const NewGridMapPage: FC<Props> = ({
+  imageGridMapRepository
+}: Props) => {
+  const heading = <PageHeader icon={FileMedia} headline="Add Map" />;
 
   const router = useRouter();
   const navigateToStart = (): void => {
@@ -34,7 +36,7 @@ export const NewGridMapPage: FC<Props> = ({ gridMapStorage }: Props) => {
           <div className="col-md-12">
             <NewGridMap
               onSave={gridMapImage => {
-                gridMapStorage.store(gridMapImage);
+                imageGridMapRepository.store(gridMapImage);
                 navigateToStart();
               }}
               onCancel={() => navigateToStart()}

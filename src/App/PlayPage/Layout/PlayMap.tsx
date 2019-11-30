@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC } from "react";
 import { BattleMapService } from "../services/BattleMapService";
 import { DisplayBackgroundImage } from "./PlayMap/DisplayBackgroundImage";
 import { DisplayTokens } from "./PlayMap/DisplayTokens";
@@ -13,9 +13,9 @@ import { is } from "../../../utils/is";
 import { combineLatest } from "rxjs";
 import { BackgroundGrid } from "./PlayMap/BackgroundGrid";
 import { SelectionGrid } from "./PlayMap/SelectionGrid";
-import { ViewBox } from "../../../model/ViewBox";
-import { windowAspectRatio } from "../../../utils/windowAspectRatio";
 import { SaveSessionService } from "../services/SaveSessionService";
+import { ViewportService } from "../services/ViewportService";
+import { ImageGridMap } from "../../../model/ImageGridMap";
 
 interface Props {
   battleMapService: BattleMapService;
@@ -23,29 +23,20 @@ interface Props {
   notesDrawingService: DrawingService;
   modeService: ModeService;
   saveSessionService: SaveSessionService;
+  viewportService: ViewportService;
 }
-
-const VIEW_BOX_SIZE = 10;
 
 export const PlayMap: FC<Props> = ({
   saveSessionService,
   battleMapService,
   backgroundDrawingService,
   notesDrawingService,
-  modeService
+  modeService,
+  viewportService
 }: Props) => {
   const tokens = useObservable(battleMapService.tokens$, []);
   const notesDrawing = useObservable(notesDrawingService.active$, false);
-  const draggingEnabled = useObservable(
-    modeService.mode$.pipe(map(is("zoom"))),
-    false
-  );
-
-  // disable touch when drawing
-  const touchEnabled = useObservable(
-    modeService.mode$.pipe(map(is("play", "manage-token", "zoom"))),
-    false
-  );
+  const viewBox = useObservable(viewportService.viewBox$, null);
 
   const squareSelectable = useObservable(
     combineLatest([
@@ -60,31 +51,18 @@ export const PlayMap: FC<Props> = ({
     battleMapService.highlightedSquares$,
     []
   );
-  const [viewBox] = useState(
-    () => new ViewBox(0, 0, VIEW_BOX_SIZE, VIEW_BOX_SIZE / windowAspectRatio())
-  );
-
-  const initialScale =
-    gridMap && viewBox
-      ? Math.min(
-          viewBox.width / gridMap.getWidthInSquares(),
-          viewBox.height / gridMap.getHeightInSquares()
-        )
-      : 1;
 
   return (
     <>
-      {gridMap && (
+      {gridMap && viewBox && (
         <svg className="h-100 w-100" viewBox={viewBox.toViewBoxString()}>
-          <Viewport
-            initialScale={initialScale}
-            draggingEnabled={draggingEnabled}
-            touchEnabled={touchEnabled}
-          >
-            <DisplayBackgroundImage gridMap={gridMap} />
+          <Viewport viewportService={viewportService}>
+            {gridMap instanceof ImageGridMap && (
+              <DisplayBackgroundImage gridMap={gridMap} />
+            )}
             <BackgroundGrid
-              width={gridMap.getWidthInSquares()}
-              height={gridMap.getHeightInSquares()}
+              width={gridMap.widthInSquares}
+              height={gridMap.heightInSquares}
             />
             <DrawingPane
               name="background"
@@ -92,8 +70,8 @@ export const PlayMap: FC<Props> = ({
             />
             {squareSelectable && (
               <SelectionGrid
-                width={gridMap.getWidthInSquares()}
-                height={gridMap.getHeightInSquares()}
+                width={gridMap.widthInSquares}
+                height={gridMap.heightInSquares}
                 highlightedSquares={highlightedSquares}
                 onClick={s => battleMapService.selectSquare(s)}
                 onHover={s => battleMapService.hoverOverSquare(s)}

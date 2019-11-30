@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import { GridMap } from "../../../../model/GridMap";
+import { ImageGridMap } from "../../../../model/ImageGridMap";
 
 interface Props {
-  gridMap: GridMap;
+  gridMap: ImageGridMap;
 }
 
 export const DisplayBackgroundImage: FC<Props> = ({ gridMap }: Props) => {

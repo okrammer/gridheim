@@ -12,19 +12,20 @@ import { ManageTokenService } from "./PlayPage/services/modebased/ManageTokenSer
 import { ModeService } from "./PlayPage/services/ModeService";
 import { SaveSessionService } from "./PlayPage/services/SaveSessionService";
 import { Layout } from "./PlayPage/Layout";
-import { SessionStorage } from "../services/SessionStorage";
-import { GridMapStorage } from "../services/GridMapStorage";
+import { SessionRepository } from "../services/SessionRepository";
 import { NoSessionsFound } from "./PlayPage/NoSessionsFound";
 import { ZoomModeService } from "./PlayPage/services/modebased/ZoomModeService";
+import { ViewportService } from "./PlayPage/services/ViewportService";
+import { GridMapService } from "../services/GridMapService";
 
 interface Props {
-  gridMapStorage: GridMapStorage;
-  sessionStorage: SessionStorage;
+  gridMapService: GridMapService;
+  sessionRepository: SessionRepository;
 }
 
 export const PlayPage: FC<Props> = ({
-  gridMapStorage,
-  sessionStorage
+  gridMapService,
+  sessionRepository
 }: Props) => {
   const [services, setServices] = useState<Services | null>(null);
   const [sessionLoaded, setSessionLoaded] = useState<
@@ -32,10 +33,11 @@ export const PlayPage: FC<Props> = ({
   >("LOADING");
   useEffect(() => {
     const saveSessionService = new SaveSessionService(
-      gridMapStorage,
-      sessionStorage
+      gridMapService,
+      sessionRepository
     );
     const battleMapService = new BattleMapService();
+
     const playModeService = new PlayModeService(battleMapService);
     const backgroundDrawingService = new DrawingService();
     const notesDrawingService = new DrawingService();
@@ -52,6 +54,11 @@ export const PlayPage: FC<Props> = ({
       "manage-token": manageTokenService,
       zoom: zoomModeService
     });
+
+    const viewportService = new ViewportService(
+      modeService,
+      saveSessionService
+    );
 
     saveSessionService
       .add("tokens", battleMapService.tokens$)
@@ -110,7 +117,8 @@ export const PlayPage: FC<Props> = ({
       modeService,
       manageTokenService,
       assetService,
-      saveSessionService
+      saveSessionService,
+      viewportService
     });
     return () => {
       console.log("disposing PlayApp");
@@ -124,7 +132,7 @@ export const PlayPage: FC<Props> = ({
       manageTokenService.dispose();
       assetService.dispose();
     };
-  }, [sessionStorage, gridMapStorage]);
+  }, [sessionStorage, gridMapService]);
 
   return (
     <>

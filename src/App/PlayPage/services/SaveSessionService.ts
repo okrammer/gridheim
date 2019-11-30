@@ -1,10 +1,11 @@
 import { BehaviorSubject, Observable, of, Subject, throwError } from "rxjs";
 import { auditTime, catchError, flatMap, map } from "rxjs/operators";
 import { Session } from "../../../model/Session";
-import { GridMap } from "../../../model/GridMap";
-import { GridMapStorage } from "../../../services/GridMapStorage";
-import { SessionStorage } from "../../../services/SessionStorage";
+import { ImageGridMap } from "../../../model/ImageGridMap";
+import { SessionRepository } from "../../../services/SessionRepository";
 import { AbstractService } from "../../../services/AbstractService";
+import { GridMapService } from "../../../services/GridMapService";
+import { GridMap } from "../../../model/GridMap";
 
 export class SaveSessionService extends AbstractService {
   private onLoad: { [name: string]: Subject<any> } = {};
@@ -15,8 +16,8 @@ export class SaveSessionService extends AbstractService {
   readonly gridMap$ = this.untilDisposed(this.gridMapS$.asObservable());
 
   constructor(
-    private readonly gridMapStorage: GridMapStorage,
-    private readonly sessionStorage: SessionStorage
+    private readonly gridMapService: GridMapService,
+    private readonly sessionRepository: SessionRepository
   ) {
     super();
     this.session$.pipe(auditTime(10000)).subscribe({
@@ -28,7 +29,7 @@ export class SaveSessionService extends AbstractService {
   }
 
   saveSession(): void {
-    this.session && this.sessionStorage.store(this.session);
+    this.session && this.sessionRepository.store(this.session);
   }
 
   add<T>(name: string, valuesToStore: Observable<T>): Observable<T> {
@@ -39,19 +40,19 @@ export class SaveSessionService extends AbstractService {
   }
 
   loadAndStart(): Observable<boolean> {
-    return this.sessionStorage.findCurrentSessionName().pipe(
+    return this.sessionRepository.findCurrentSessionName().pipe(
       flatMap(sessionName =>
         sessionName
           ? of(sessionName!)
           : throwError("No current session name found in local storage")
       ),
-      flatMap(sessionName => this.sessionStorage.findBy(sessionName)),
+      flatMap(sessionName => this.sessionRepository.findBy(sessionName)),
       flatMap(session =>
         session ? of(session) : throwError("Failed Loading Session")
       ),
       flatMap(session =>
-        this.gridMapStorage
-          .findBy(session.gridMapName)
+        this.gridMapService
+          .getGridMapByName(session.gridMapName)
           .pipe(map(gridMap => [session, gridMap] as const))
       ),
       flatMap(([session, gridMap]) =>

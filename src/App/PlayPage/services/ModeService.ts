@@ -1,6 +1,8 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { ModeBasedService } from "./modebased/ModeBasedService";
 import { AbstractService } from "../../../services/AbstractService";
+import { is } from "../../../utils/is";
+import { map } from "rxjs/operators";
 
 export type Mode =
   | "play"
@@ -30,5 +32,9 @@ export class ModeService extends AbstractService {
 
   get mode(): Mode {
     return this.modeS$.value;
+  }
+
+  oneOf(...modes: Mode[]): Observable<boolean> {
+    return this.mode$.pipe(map(is(...modes)));
   }
 }

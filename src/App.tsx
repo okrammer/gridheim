@@ -7,14 +7,15 @@ import { AboutPage } from "./App/AboutPage";
 import { PlayPage } from "./App/PlayPage";
 import { IndexedDbStorageProvider } from "./services/IndexedDbStorageProvider";
 import { StartPage } from "./App/StartPage";
-import { GridMapStorage } from "./services/GridMapStorage";
-import { SessionStorage } from "./services/SessionStorage";
+import { ImageGridMapRepository } from "./services/ImageGridMapRepository";
+import { SessionRepository } from "./services/SessionRepository";
 import { NewGridMapPage } from "./App/NewGridMapPage";
 import { NewSessionPage } from "./App/NewSessionPage";
 import { OpenSourcePage } from "./App/OpenSourcePage";
 import { AppPage } from "./App/AppPage";
 import { Route } from "react-router";
 import { AssetsPage } from "./App/AssetsPage";
+import { GridMapService } from "./services/GridMapService";
 
 export const routing = {
   start: "/",
@@ -34,9 +35,15 @@ interface Props {}
 export const App: FC<Props> = ({  }: Props) => {
   const [services] = useState(() => {
     const storageProvider = new IndexedDbStorageProvider();
-    const gridMapStorage = new GridMapStorage(storageProvider);
-    const sessionStorage = new SessionStorage(storageProvider);
-    return { storageProvider, gridMapStorage, sessionStorage };
+    const imageGridMapRepository = new ImageGridMapRepository(storageProvider);
+    const sessionRepository = new SessionRepository(storageProvider);
+    const gridMapService = new GridMapService(imageGridMapRepository);
+    return {
+      storageProvider,
+      imageGridMapRepository,
+      sessionRepository,
+      gridMapService
+    };
   });
 
   return (

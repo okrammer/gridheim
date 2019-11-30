@@ -1,18 +1,8 @@
 import React, { FC } from "react";
 import { FullPageWithHeading } from "../common/FullPageWithHeading";
-import Octicon, {
-  FileMedia,
-  Icon,
-  Info,
-  Key,
-  Law,
-  Milestone,
-  Play
-} from "@primer/octicons-react";
-import { routing } from "../App";
+import { Icon, Milestone } from "@primer/octicons-react";
 import { PageHeader } from "../common/PageHeader";
-import { GridMapStorage } from "../services/GridMapStorage";
-import { SessionStorage } from "../services/SessionStorage";
+import { SessionRepository } from "../services/SessionRepository";
 import { useObservable } from "../utils/useObservable";
 import { map, take } from "rxjs/operators";
 import { playAction } from "./StartPage/actions/PlayAction";
@@ -26,29 +16,30 @@ import { Dict } from "../utils/types";
 import { StartSection } from "./StartPage/StartSection";
 import { StartSectionItem } from "./StartPage/StartSectionItem";
 import { labels } from "../data/labels";
-import { links } from "../data/links";
 import { aboutAction } from "./StartPage/actions/AboutAction";
 import { openSourceAction } from "./StartPage/actions/OpenSourceAction";
 import { assetAction } from "./StartPage/actions/AssetAction";
+import { ImageGridMapRepository } from "../services/ImageGridMapRepository";
 
 interface Props {
-  gridMapStorage: GridMapStorage;
-  sessionStorage: SessionStorage;
+  imageGridMapRepository: ImageGridMapRepository;
+  sessionRepository: SessionRepository;
 }
+
 const sections: Dict<{ icon: Icon; headline: string }> =
   labels.startPage.sections;
 
 export const StartPage: FC<Props> = ({
-  gridMapStorage,
-  sessionStorage
+  imageGridMapRepository,
+  sessionRepository
 }: Props) => {
   const actions: Dict<Array<Action>> = useObservable(
     combineLatest([
-      playAction(sessionStorage),
-      newSessionAction(gridMapStorage),
-      showSessionsAction(sessionStorage),
+      playAction(sessionRepository),
+      newSessionAction(),
+      showSessionsAction(sessionRepository),
       newGridMapAction(),
-      showGridMapsAction(gridMapStorage),
+      showGridMapsAction(imageGridMapRepository),
       aboutAction(),
       openSourceAction(),
       assetAction()
@@ -71,7 +62,7 @@ export const StartPage: FC<Props> = ({
       take(1)
     ),
     {},
-    [sessionStorage, gridMapStorage]
+    [sessionStorage]
   );
 
   return (

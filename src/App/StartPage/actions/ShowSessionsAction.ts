@@ -1,12 +1,12 @@
 import { Action } from "../Action";
-import { SessionStorage } from "../../../services/SessionStorage";
+import { SessionRepository } from "../../../services/SessionRepository";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { routing } from "../../../App";
 import { labels } from "../../../data/labels";
 
 export const showSessionsAction = (
-  sessionStorage: SessionStorage
+  sessionStorage: SessionRepository
 ): Observable<Action | null> => {
   return sessionStorage.count().pipe(
     map(count => {
