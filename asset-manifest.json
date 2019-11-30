@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "./static/css/main.3f5a809f.chunk.css",
-    "main.js": "./static/js/main.17a145bf.chunk.js",
-    "main.js.map": "./static/js/main.17a145bf.chunk.js.map",
+    "main.js": "./static/js/main.cd16b63f.chunk.js",
+    "main.js.map": "./static/js/main.cd16b63f.chunk.js.map",
     "runtime-main.js": "./static/js/runtime-main.da627d16.js",
     "runtime-main.js.map": "./static/js/runtime-main.da627d16.js.map",
     "static/js/2.d55b5ac2.chunk.js": "./static/js/2.d55b5ac2.chunk.js",
     "static/js/2.d55b5ac2.chunk.js.map": "./static/js/2.d55b5ac2.chunk.js.map",
     "index.html": "./index.html",
-    "precache-manifest.9ecc670003b197b3a13f01ba957a4dd8.js": "./precache-manifest.9ecc670003b197b3a13f01ba957a4dd8.js",
+    "precache-manifest.b222bfb820fcc2040123e381712091d1.js": "./precache-manifest.b222bfb820fcc2040123e381712091d1.js",
     "service-worker.js": "./service-worker.js",
     "static/css/main.3f5a809f.chunk.css.map": "./static/css/main.3f5a809f.chunk.css.map",
     "static/media/john-westrock-UHFQPFt5-WA-unsplash.jpg": "./static/media/john-westrock-UHFQPFt5-WA-unsplash.3466438c.jpg"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.da627d16.js",
     "static/js/2.d55b5ac2.chunk.js",
     "static/css/main.3f5a809f.chunk.css",
-    "static/js/main.17a145bf.chunk.js"
+    "static/js/main.cd16b63f.chunk.js"
   ]
 }
