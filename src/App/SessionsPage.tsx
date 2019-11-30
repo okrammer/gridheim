@@ -38,7 +38,7 @@ export const SessionsPage: FC<Props> = ({
         setGridMapForName(arrayToDict(gridMaps, gridMap => gridMap.name));
       }
     });
-  }, [sessionStorage, gridMapService]);
+  }, [sessionRepository, gridMapService]);
 
   useEffect(() => {
     reload();
@@ -66,7 +66,7 @@ export const SessionsPage: FC<Props> = ({
                   type="button"
                   className="btn btn-primary mr-2"
                   onClick={() => {
-                    sessionStorage.storeCurrentSessionName(session.name);
+                    sessionRepository.storeCurrentSessionName(session.name);
                     navigateToPlay();
                   }}
                 >
@@ -77,7 +77,7 @@ export const SessionsPage: FC<Props> = ({
                   type="button"
                   className="btn btn-danger"
                   onClick={() => {
-                    sessionStorage.delete(session.name);
+                    sessionRepository.delete(session.name);
                     reload();
                   }}
                 >

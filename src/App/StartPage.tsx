@@ -62,7 +62,7 @@ export const StartPage: FC<Props> = ({
       take(1)
     ),
     {},
-    [sessionStorage]
+    [sessionRepository]
   );
 
   return (

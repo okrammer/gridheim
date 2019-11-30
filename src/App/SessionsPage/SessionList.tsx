@@ -7,6 +7,7 @@ import { Session } from "../../model/Session";
 import { ImageGridMap } from "../../model/ImageGridMap";
 import { Dict } from "../../utils/types";
 import { GridMap } from "../../model/GridMap";
+import { ListGroupItem } from "../../common/listgroup/ListGroupItem";
 
 interface Props {
   sessions: ReadonlyArray<Session>;
@@ -25,7 +26,7 @@ export const SessionList: FC<Props> = ({
         const gridMap = gridMapsForName[session.gridMapName];
 
         return (
-          <ListGroupItemAction key={session.name}>
+          <ListGroupItem key={session.name}>
             <MediaContainer>
               <MediaBody>
                 <h4>{session.name}</h4>
@@ -57,7 +58,7 @@ export const SessionList: FC<Props> = ({
                 />
               )}
             </MediaContainer>
-          </ListGroupItemAction>
+          </ListGroupItem>
         );
       })}
     </ListGroup>

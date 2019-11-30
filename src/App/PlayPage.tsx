@@ -132,7 +132,7 @@ export const PlayPage: FC<Props> = ({
       manageTokenService.dispose();
       assetService.dispose();
     };
-  }, [sessionStorage, gridMapService]);
+  }, [sessionRepository, gridMapService]);
 
   return (
     <>
