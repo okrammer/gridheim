@@ -1,11 +1,12 @@
 import React, { FC, useEffect, useState } from "react";
 import { Transformation } from "../../../../model/Transformation";
-import Octicon, { Check } from "@primer/octicons-react";
+import Octicon, { ChevronLeft, ChevronRight } from "@primer/octicons-react";
 import { BackgroundImage } from "../../../../model/BackgroundImage";
 import { ExplanationBox } from "../../../../common/ExplanationBox";
 import { SelectionRect } from "./SelectionRect";
 import { ViewControls } from "./common/ViewControls";
 import { Rect } from "../../../../utils/Rect";
+import { WizardButtons } from "./common/WizardButtons";
 
 const viewPositionToLabel = {
   center: "center",
@@ -17,12 +18,14 @@ interface Props {
   image: BackgroundImage;
   onApply: (rect: Rect) => void;
   viewPosition: "center" | "left-top" | "right-bottom";
+  onBack: () => void;
 }
 
 export const PlaceSquare: FC<Props> = ({
   image,
   onApply,
-  viewPosition
+  viewPosition,
+  onBack
 }: Props) => {
   const [transformation, setTransformation] = useState(
     Transformation.default()
@@ -81,17 +84,7 @@ export const PlaceSquare: FC<Props> = ({
               />
             </g>
           </svg>
-          <div>
-            <button
-              className="btn btn-sm btn-success mt-2"
-              onClick={apply}
-              type="button"
-              disabled={!rect}
-            >
-              <Octicon icon={Check} />
-              Next
-            </button>
-          </div>
+          <WizardButtons onNext={apply} nextDisabled={!rect} onBack={onBack} />
         </div>
       </div>
     </>

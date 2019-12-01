@@ -1,11 +1,13 @@
 import React, { FC, useState } from "react";
 import Octicon, { Tag } from "@primer/octicons-react";
+import { WizardButtons } from "./TransformationSetup/common/WizardButtons";
 
 interface Props {
   onSave: (name: string) => void;
+  onBack: () => void;
 }
 
-export const AddMetadata: FC<Props> = ({ onSave }: Props) => {
+export const AddMetadata: FC<Props> = ({ onSave, onBack }: Props) => {
   const [name, setName] = useState<undefined | string>("");
   return (
     <>
@@ -34,15 +36,12 @@ export const AddMetadata: FC<Props> = ({ onSave }: Props) => {
       </div>
       <div className="row mt-3">
         <div className="col-md-12">
-          <button
-            className="btn btn-success"
-            type="button"
-            onClick={(): void => {
-              name && onSave(name);
-            }}
-          >
-            Save
-          </button>
+          <WizardButtons
+            onNext={() => name && onSave(name)}
+            onBack={() => onBack()}
+            nextDisabled={!name}
+            lastStep={true}
+          />
         </div>
       </div>
     </>

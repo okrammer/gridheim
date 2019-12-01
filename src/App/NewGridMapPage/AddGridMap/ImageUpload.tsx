@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC, useEffect, useState } from "react";
 import { ExplanationBox } from "../../../common/ExplanationBox";
 import Octicon, { Check } from "@primer/octicons-react";
+import { WizardButtons } from "./TransformationSetup/common/WizardButtons";
 
 interface Props {
   initialUrl: string | null;
@@ -81,15 +82,7 @@ export const ImageUpload: FC<Props> = ({ initialUrl, onApply }: Props) => {
       )}
       <div className="row mt-3">
         <div className="col-md-12">
-          <button
-            className="btn btn-sm btn-success mt-2"
-            disabled={!imageUrl}
-            onClick={onNext}
-            type="button"
-          >
-            <Octicon icon={Check} />
-            Next
-          </button>
+          <WizardButtons onNext={onNext} nextDisabled={!imageUrl} />
         </div>
       </div>
     </>

@@ -97,10 +97,18 @@ export const NewGridMap: FC<Props> = ({ onSave, onCancel }: Props) => {
               );
               resetScrolling();
             }}
+            onBack={() => {
+              setImage(null);
+              setStep(steps.upload);
+            }}
           />
         )}
         {image && transformation && (
           <AddMetadata
+            onBack={() => {
+              setTransformation(null);
+              setStep(steps.selectSquare1);
+            }}
             onSave={name => {
               saveGridMap(name);
             }}
