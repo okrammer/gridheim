@@ -5,7 +5,7 @@ import { DisplayTokens } from "./PlayMap/DisplayTokens";
 import { useObservable } from "../../../utils/useObservable";
 import { DrawingCapturePane } from "./PlayMap/DrawingCapturePane";
 import { DrawingService } from "../services/modebased/DrawingService";
-import { DrawingPane } from "./PlayMap/DrawingPane";
+import { DisplayDrawingPane } from "./PlayMap/DisplayDrawingPane";
 import { ModeService } from "../services/ModeService";
 import { map } from "rxjs/operators";
 import { Viewport } from "./PlayMap/Viewport";
@@ -67,17 +67,17 @@ export const PlayMap: FC<Props> = ({
               <DisplayBackgroundImage gridMap={gridMap} />
             )}
             <BackgroundGrid
-              width={gridMap.widthInSquares}
-              height={gridMap.heightInSquares}
+              width={gridMap.squares.x}
+              height={gridMap.squares.y}
             />
-            <DrawingPane
+            <DisplayDrawingPane
               name="background"
               drawingService={backgroundDrawingService}
             />
             {squareSelectable && (
               <SelectionGrid
-                width={gridMap.widthInSquares}
-                height={gridMap.heightInSquares}
+                width={gridMap.squares.x}
+                height={gridMap.squares.y}
                 highlightedSquares={highlightedSquares}
                 onClick={s => battleMapService.selectSquare(s)}
                 onHover={s => battleMapService.hoverOverSquare(s)}
@@ -90,7 +90,10 @@ export const PlayMap: FC<Props> = ({
             />
             {// disable this component here, so the background DrawingPane is always shown...
             notesDrawing && (
-              <DrawingPane name="notes" drawingService={notesDrawingService} />
+              <DisplayDrawingPane
+                name="notes"
+                drawingService={notesDrawingService}
+              />
             )}
 
             <DrawingCapturePane drawingService={notesDrawingService} />

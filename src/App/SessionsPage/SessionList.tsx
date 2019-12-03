@@ -35,8 +35,7 @@ export const SessionList: FC<Props> = ({
                     <>
                       <dt className="col-sm-3">Map</dt>
                       <dd className="col-sm-9">
-                        {gridMap.name} ({gridMap.widthInSquares}x
-                        {gridMap.heightInSquares})
+                        {gridMap.name} ({gridMap.squares.x}x{gridMap.squares.y})
                       </dd>
                     </>
                   )}

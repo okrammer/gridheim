@@ -1,12 +1,10 @@
 import React, { FC, useEffect, useState } from "react";
 import { Transformation } from "../../../../model/Transformation";
-import Octicon, { ChevronLeft, ChevronRight } from "@primer/octicons-react";
 import { BackgroundImage } from "../../../../model/BackgroundImage";
 import { ExplanationBox } from "../../../../common/ExplanationBox";
 import { SelectionRect } from "./SelectionRect";
 import { ViewControls } from "./common/ViewControls";
 import { Rect } from "../../../../utils/Rect";
-import { WizardButtons } from "./common/WizardButtons";
 
 const viewPositionToLabel = {
   center: "center",
@@ -16,22 +14,24 @@ const viewPositionToLabel = {
 
 interface Props {
   image: BackgroundImage;
-  onApply: (rect: Rect) => void;
+  onChange: (rect: Rect | null) => void;
+  rect: Rect | null;
   viewPosition: "center" | "left-top" | "right-bottom";
-  onBack: () => void;
 }
 
 export const PlaceSquare: FC<Props> = ({
   image,
-  onApply,
+  onChange,
   viewPosition,
-  onBack
+  rect: initialRect
 }: Props) => {
   const [transformation, setTransformation] = useState(
     Transformation.default()
   );
 
-  const [rect, setRect] = useState<null | Rect>(null);
+  const [rect, setRect] = useState<null | Rect>(initialRect);
+
+  useEffect(() => setRect(initialRect), [initialRect]);
 
   useEffect(() => {
     const scale = (600 / image.width) * 2;
@@ -44,12 +44,9 @@ export const PlaceSquare: FC<Props> = ({
     setTransformation(t);
   }, [image, viewPosition]);
 
-  const apply = (): void => {
-    if (!rect) {
-      return;
-    }
-
-    onApply(rect);
+  const updateRect = (rect: Rect | null): void => {
+    setRect(rect);
+    onChange(rect);
   };
 
   return (
@@ -78,13 +75,13 @@ export const PlaceSquare: FC<Props> = ({
                 xlinkHref={image.url}
               />
               <SelectionRect
+                rect={rect}
                 width={image.width}
                 height={image.width}
-                onChange={setRect}
+                onChange={updateRect}
               />
             </g>
           </svg>
-          <WizardButtons onNext={apply} nextDisabled={!rect} onBack={onBack} />
         </div>
       </div>
     </>

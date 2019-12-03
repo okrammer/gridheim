@@ -23,21 +23,23 @@ export const GridMapList: FC<Props> = ({ gridMaps, children }: Props) => {
                 <dl className="row">
                   <dt className="col-sm-3">Size in Squares</dt>
                   <dd className="col-sm-9">
-                    {gridMap.widthInSquares}x{gridMap.heightInSquares}
+                    {gridMap.squares.x}x{gridMap.squares.y}
                   </dd>
 
                   {gridMap instanceof ImageGridMap && (
                     <>
                       <dt className="col-sm-3">Scale</dt>
-                      <dd className="col-sm-9">
-                        {gridMap.transformation.scale}
-                      </dd>
+                      <dd className="col-sm-9">{gridMap.transform.scale}</dd>
 
                       <dt className="col-sm-3">X Offset</dt>
-                      <dd className="col-sm-9">{gridMap.transformation.dx}</dd>
+                      <dd className="col-sm-9">
+                        {gridMap.transform.translate.x}
+                      </dd>
 
                       <dt className="col-sm-3">Y Offset</dt>
-                      <dd className="col-sm-9">{gridMap.transformation.dy}</dd>
+                      <dd className="col-sm-9">
+                        {gridMap.transform.translate.y}
+                      </dd>
                     </>
                   )}
                 </dl>

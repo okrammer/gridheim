@@ -7,7 +7,7 @@ interface Props {
 
 export const DisplayBackgroundImage: FC<Props> = ({ gridMap }: Props) => {
   return (
-    <g transform={gridMap.transformation.asTransformString()}>
+    <g {...gridMap.transform.scaleTranslateAttribute}>
       <image
         width={gridMap.image.width}
         height={gridMap.image.height}

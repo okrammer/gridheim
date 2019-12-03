@@ -1,6 +1,7 @@
+import { Vector } from "../utils/Vector";
+
 export interface GridMap {
   name: string;
   isAsset: boolean;
-  widthInSquares: number;
-  heightInSquares: number;
+  squares: Vector;
 }

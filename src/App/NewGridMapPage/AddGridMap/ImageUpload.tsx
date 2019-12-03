@@ -1,19 +1,21 @@
 import React, { ChangeEvent, FC, useEffect, useState } from "react";
 import { ExplanationBox } from "../../../common/ExplanationBox";
-import Octicon, { Check } from "@primer/octicons-react";
-import { WizardButtons } from "./TransformationSetup/common/WizardButtons";
+import { BackgroundImage as ImageModel } from "../../../model/BackgroundImage";
+import { WizardStepComponentProps } from "../../../common/Wizard/WizardStep";
 
-interface Props {
-  initialUrl: string | null;
-  onApply: (url: string) => void;
-}
+interface Props extends WizardStepComponentProps<unknown, ImageModel> {}
 
-export const ImageUpload: FC<Props> = ({ initialUrl, onApply }: Props) => {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+export const ImageUpload: FC<Props> = ({ value, onValueChange }: Props) => {
+  const [image, setImage] = useState<ImageModel | null>(null);
 
   useEffect(() => {
-    setImageUrl(initialUrl);
-  }, [initialUrl]);
+    setImage(value);
+  }, [value]);
+
+  const updateImage = (image: ImageModel | null): void => {
+    setImage(image);
+    onValueChange(image);
+  };
 
   const onFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const files = event!.target!.files;
@@ -22,23 +24,30 @@ export const ImageUpload: FC<Props> = ({ initialUrl, onApply }: Props) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         const url = reader.result as string;
-        setImageUrl(url);
+        setImageFromUrl(url);
       };
 
       reader.readAsDataURL(file);
     }
   };
-  const onResetImage = (): void => {
-    setImageUrl(null);
-  };
 
-  const onNext = (): void => {
-    onApply(imageUrl!);
+  const setImageFromUrl = (url: string): void => {
+    if (url) {
+      const img = new Image();
+
+      img.onload = function() {
+        updateImage(new ImageModel(url, img.width, img.height));
+      };
+
+      img.src = url;
+    } else {
+      updateImage(null);
+    }
   };
 
   return (
     <>
-      {!!imageUrl || (
+      {!image && (
         <div className="row mt-3">
           <div className="col-md-12">
             <ExplanationBox>
@@ -61,30 +70,25 @@ export const ImageUpload: FC<Props> = ({ initialUrl, onApply }: Props) => {
           </div>
         </div>
       )}
-      {!!imageUrl && (
+      {image && (
         <div className="row mt-3">
           <div className="col-md-12">
-            <div>
-              <button
-                className="btn btn-secondary btn-sm"
-                type="button"
-                onClick={onResetImage}
-              >
-                Change
-              </button>
-            </div>
             <img
               className="img-thumbnail gridMap-form_image-preview"
-              src={imageUrl}
+              src={image.url}
             />
+          </div>
+          <div>
+            <button
+              className="btn btn-secondary btn-sm"
+              type="button"
+              onClick={() => updateImage(null)}
+            >
+              Change
+            </button>
           </div>
         </div>
       )}
-      <div className="row mt-3">
-        <div className="col-md-12">
-          <WizardButtons onNext={onNext} nextDisabled={!imageUrl} />
-        </div>
-      </div>
     </>
   );
 };

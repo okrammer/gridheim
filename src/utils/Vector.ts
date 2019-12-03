@@ -74,4 +74,8 @@ export class Vector {
     }
     return this.x === v.x && this.y === v.y;
   }
+
+  get ceil(): Vector {
+    return new Vector(Math.ceil(this.x), Math.ceil(this.y));
+  }
 }

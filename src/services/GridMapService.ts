@@ -2,13 +2,13 @@ import { ImageGridMapRepository } from "./ImageGridMapRepository";
 import { GridMap } from "../model/GridMap";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
+import { Vector } from "../utils/Vector";
 
 export class GridMapService {
   private static BLANK_GRID_MAP: GridMap = Object.freeze({
     name: "BLANK-MAP",
     isAsset: false,
-    widthInSquares: 100,
-    heightInSquares: 100
+    squares: new Vector(100, 100)
   });
 
   constructor(readonly imageGridMapRepository: ImageGridMapRepository) {}

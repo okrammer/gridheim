@@ -7,15 +7,24 @@ import { Rect } from "../../../../utils/Rect";
 interface Props {
   width: number;
   height: number;
+  rect: Rect | null;
   onChange: (rect: Rect | null) => void;
 }
 
 export const SelectionRect: FC<Props> = ({
+  rect,
   width,
   height,
   onChange
 }: Props) => {
-  const [selectionRect, setSelectionRect] = useState<Rect | null>(null);
+  const [selectionRect, setSelectionRect] = useState<Rect | null>(
+    rect &&
+      new Rect(
+        rect.topLeft.subtract(Vector.fromNumber(rect.sideLength)),
+        rect.sideLength * 3
+      )
+  );
+
   const updateRect = (rect: Rect | null): void => {
     setSelectionRect(rect);
     const r = rect && rect.normalized;

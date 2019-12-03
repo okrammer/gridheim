@@ -42,8 +42,8 @@ export class ViewportService {
     map(([gridMap, viewBox]) =>
       gridMap
         ? Math.min(
-            viewBox.width / gridMap.widthInSquares,
-            viewBox.height / gridMap.heightInSquares
+            viewBox.width / gridMap.squares.x,
+            viewBox.height / gridMap.squares.y
           )
         : 1
     )

@@ -1,26 +1,28 @@
 import React, { FC, ReactElement, ReactNode, useContext } from "react";
 import { WizardContext } from "../Wizard";
 
-export interface Props<T> {
+export interface Props<I, T> {
   id: string;
-  enabled: boolean;
   title: string;
-  children: (props: {
-    onValueChange: (value: T | null) => void;
-    value: T | null;
-  }) => ReactNode;
+  children: (props: WizardStepComponentProps<I, T>) => ReactNode;
 }
 
-export function WizardStep<T extends undefined>({
-  enabled,
-  title,
+export interface WizardStepComponentProps<I, T> {
+  input: I;
+  onValueChange: (value: T | null) => void;
+  value: T | null;
+}
+
+export function WizardStep<I, T>({
   children,
   id
-}: Props<T>): ReactElement | null {
+}: Props<I, T>): ReactElement | null {
   const context = useContext(WizardContext);
   const childArgs = {
+    input: context.input(id),
     onValueChange: (value: any) => context.onValueChange(id, value),
     value: context.value(id)
   };
+  console.log("wizard steps", { id, childArgs });
   return <>{children(childArgs)}</>;
 }

@@ -1,59 +1,82 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Transformation } from "../../../../model/Transformation";
-import Octicon, {
-  ArrowDown,
-  ArrowUp,
-  Check,
-  ChevronLeft,
-  ChevronRight
-} from "@primer/octicons-react";
+import Octicon, { ArrowDown, ArrowUp } from "@primer/octicons-react";
 import { BackgroundImage } from "../../../../model/BackgroundImage";
 import { range } from "../../../../utils/range";
 import { ExplanationBox } from "../../../../common/ExplanationBox";
 import { ViewControls } from "./common/ViewControls";
 import { TransformParams } from "./common/TransformParams";
-import { WizardButtons } from "./common/WizardButtons";
+import { Rect } from "../../../../utils/Rect";
+import { Transform } from "../../../../utils/Transform";
+import { Vector } from "../../../../utils/Vector";
 
-const calculateTransformation = (params: TransformParams): Transformation => {
+const calculateTransformation = (
+  params: TransformParams,
+  rect1: Rect,
+  rect2: Rect
+): Transform => {
   const calculatedA = params.distance / params.squareCount;
 
-  const dx1 = -params.rect1.topLeft.x % calculatedA;
-  const dx2 = -params.rect2.topLeft.x % calculatedA;
+  const dx1 = -rect1.topLeft.x % calculatedA;
+  const dx2 = -rect2.topLeft.x % calculatedA;
   const dx = (dx1 + dx2) / 2;
 
-  const dy1 = -params.rect1.topLeft.y % calculatedA;
-  const dy2 = -params.rect2.topLeft.y % calculatedA;
+  const dy1 = -rect1.topLeft.y % calculatedA;
+  const dy2 = -rect2.topLeft.y % calculatedA;
   const dy = (dy1 + dy2) / 2;
 
-  return Transformation.of({ scale: 1 / calculatedA, dx, dy });
+  return new Transform(new Vector(dx, dy), 1 / calculatedA);
+};
+
+const calculateParams = (rect1: Rect, rect2: Rect): TransformParams => {
+  const distanceByAxis = {
+    x: Math.abs(rect2.topLeft.x - rect1.topLeft.x),
+    y: Math.abs(rect2.topLeft.y - rect1.topLeft.y)
+  };
+
+  const axis: "x" | "y" = distanceByAxis.x > distanceByAxis.y ? "x" : "y";
+
+  const averageA = (rect1.sideLength + rect2.sideLength) / 2;
+
+  const distance = distanceByAxis[axis];
+  const squareCount = Math.round(distance / averageA);
+  return {
+    axis,
+    squareCount,
+    distance
+  };
 };
 
 interface Props {
   image: BackgroundImage;
-  params: TransformParams;
-  onApply: (t: Transformation) => void;
-  onBack: () => void;
+  rect1: Rect;
+  rect2: Rect;
+  transformParams: TransformParams | null;
+  onChange: (transform: Transform, transformParams: TransformParams) => void;
 }
 
 export const PreviewGrid: FC<Props> = ({
   image,
-  onApply,
-  params: initialParams,
-  onBack
+  rect1,
+  rect2,
+  transformParams,
+  onChange
 }: Props) => {
   const [viewTransformation, setViewTransformation] = useState(
     Transformation.default()
   );
-  const [params, setParams] = useState(initialParams);
+  const [params, setParams] = useState(
+    transformParams || calculateParams(rect1, rect2)
+  );
 
-  const imageTransformation = calculateTransformation(params);
+  const imageTransformation = calculateTransformation(params, rect1, rect2);
 
   const xSquareCount = Math.ceil(image.width * imageTransformation.scale + 1);
   const ySquareCount = Math.ceil(image.height * imageTransformation.scale + 1);
 
-  const apply = (): void => {
-    onApply(imageTransformation);
-  };
+  useEffect(() => {
+    onChange(imageTransformation, params);
+  }, [params]);
 
   return (
     <>
@@ -74,11 +97,29 @@ export const PreviewGrid: FC<Props> = ({
             className="img-thumbnail"
           >
             <g transform={viewTransformation.asTransformString()}>
-              <g transform={imageTransformation.asTransformString()}>
+              <g {...imageTransformation.scaleTranslateAttribute}>
                 <image
                   width={image.width}
                   height={image.height}
                   xlinkHref={image.url}
+                />
+                <rect
+                  x={rect1.topLeft.x}
+                  y={rect1.topLeft.y}
+                  width={rect1.sideLength}
+                  height={rect1.sideLength}
+                  stroke="#0f86ff"
+                  strokeWidth={0.03}
+                  fillOpacity={0}
+                />
+                <rect
+                  x={rect2.topLeft.x}
+                  y={rect2.topLeft.y}
+                  width={rect2.sideLength}
+                  height={rect2.sideLength}
+                  stroke="#0f86ff"
+                  strokeWidth={0.03}
+                  fillOpacity={0}
                 />
               </g>
               {range(xSquareCount).map(x => {
@@ -98,24 +139,6 @@ export const PreviewGrid: FC<Props> = ({
                   );
                 });
               })}
-              <rect
-                x={params.rect1.topLeft.x}
-                y={params.rect1.topLeft.y}
-                width="1"
-                height="1"
-                stroke="red"
-                strokeWidth={0.03}
-                fillOpacity={0}
-              />
-              <rect
-                x={params.rect2.topLeft.x}
-                y={params.rect2.topLeft.y}
-                width="1"
-                height="1"
-                stroke="red"
-                strokeWidth={0.03}
-                fillOpacity={0}
-              />
             </g>
           </svg>
 
@@ -123,7 +146,10 @@ export const PreviewGrid: FC<Props> = ({
             <button
               className="btn btn-sm btn-secondary mr-2"
               onClick={() => {
-                setParams({ ...params, squareCount: params.squareCount + 1 });
+                setParams({
+                  ...params,
+                  squareCount: params.squareCount + 1
+                });
               }}
               type="button"
             >
@@ -133,7 +159,10 @@ export const PreviewGrid: FC<Props> = ({
             <button
               className="btn btn-sm btn-secondary mr-2"
               onClick={() => {
-                setParams({ ...params, squareCount: params.squareCount - 1 });
+                setParams({
+                  ...params,
+                  squareCount: params.squareCount - 1
+                });
               }}
               type="button"
             >
@@ -141,7 +170,6 @@ export const PreviewGrid: FC<Props> = ({
               Too much Squares
             </button>
           </div>
-          <WizardButtons onNext={apply} onBack={onBack} />
         </div>
       </div>
     </>

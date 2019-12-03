@@ -1,12 +1,30 @@
 import React, { FC } from "react";
 import { FullPageWithHeading } from "../common/FullPageWithHeading";
-import { NewGridMap } from "./NewGridMapPage/NewGridMap";
 import { FileMedia } from "@primer/octicons-react";
-import { ExplanationBox } from "../common/ExplanationBox";
 import { PageHeader } from "../common/PageHeader";
 import { useRouter } from "../utils/useRouter";
 import { routing } from "../App";
 import { ImageGridMapRepository } from "../services/ImageGridMapRepository";
+import { Wizard } from "../common/Wizard";
+import { WizardStep } from "../common/Wizard/WizardStep";
+import { ImageUpload } from "./NewGridMapPage/AddGridMap/ImageUpload";
+import { BackgroundImage } from "../model/BackgroundImage";
+import { PlaceSquare } from "./NewGridMapPage/AddGridMap/TransformationSetup/PlaceSquare";
+import { PreviewGrid } from "./NewGridMapPage/AddGridMap/TransformationSetup/PreviewGrid";
+import { AddMetadata } from "./NewGridMapPage/AddGridMap/AddMetadata";
+import { ImageGridMap } from "../model/ImageGridMap";
+import { Rect } from "../utils/Rect";
+import { TransformParams } from "./NewGridMapPage/AddGridMap/TransformationSetup/common/TransformParams";
+import { Transform } from "../utils/Transform";
+
+export interface AddMapContext {
+  image: BackgroundImage | null;
+  rect1: Rect | null;
+  rect2: Rect | null;
+  transformParams: TransformParams | null;
+  transform: Transform;
+  name: string | null;
+}
 
 interface Props {
   imageGridMapRepository: ImageGridMapRepository;
@@ -22,27 +40,113 @@ export const NewGridMapPage: FC<Props> = ({
     router.history.push(routing.start);
   };
 
+  const onDone = (context: AddMapContext): void => {
+    imageGridMapRepository.store(
+      new ImageGridMap(context.name!, context.image!, context.transform!)
+    );
+    navigateToStart();
+  };
+
+  const onCancel = (): void => {
+    navigateToStart();
+  };
+
   return (
     <>
       <FullPageWithHeading heading={heading}>
-        <ExplanationBox>
-          <strong>Maps</strong> are stored images with a grid drawn over them.
-          <br />
-          You create a map by selecting an image file on your computer and
-          configure a grid for them. The images are stored locally in your
-          browser local storage and are not sent to the internet.
-        </ExplanationBox>
-        <div className="row">
-          <div className="col-md-12">
-            <NewGridMap
-              onSave={gridMapImage => {
-                imageGridMapRepository.store(gridMapImage);
-                navigateToStart();
-              }}
-              onCancel={() => navigateToStart()}
-            />
-          </div>
-        </div>
+        <Wizard onDone={onDone} onCancel={onCancel} title="Add Map">
+          <WizardStep<unknown, BackgroundImage>
+            id="imageUpload"
+            title="Open Image"
+          >
+            {props => <ImageUpload {...props} />}
+          </WizardStep>
+          <WizardStep<BackgroundImage, Pick<AddMapContext, "image" | "rect1">>
+            id="rect1"
+            title="Mark 1st Square"
+          >
+            {props => (
+              <>
+                <PlaceSquare
+                  image={props.input}
+                  rect={props.value && props.value.rect1}
+                  onChange={rect =>
+                    props.onValueChange({ image: props.input, rect1: rect })
+                  }
+                  viewPosition="left-top"
+                />
+              </>
+            )}
+          </WizardStep>
+          <WizardStep<
+            Pick<AddMapContext, "image" | "rect1">,
+            Pick<AddMapContext, "image" | "rect1" | "rect2">
+          >
+            id="rect2"
+            title="Mark 2st Square"
+          >
+            {props => (
+              <>
+                <PlaceSquare
+                  image={props.input.image!}
+                  rect={props.value && props.value.rect2}
+                  onChange={rect =>
+                    props.onValueChange({ ...props.input, rect2: rect })
+                  }
+                  viewPosition="right-bottom"
+                />
+              </>
+            )}
+          </WizardStep>
+          <WizardStep<
+            Pick<AddMapContext, "image" | "rect1" | "rect2">,
+            Pick<
+              AddMapContext,
+              "image" | "rect1" | "rect2" | "transformParams" | "transform"
+            >
+          >
+            id="preview"
+            title="Preview"
+          >
+            {props => (
+              <>
+                <PreviewGrid
+                  image={props.input.image!}
+                  rect1={props.input!.rect1!}
+                  rect2={props.input!.rect2!}
+                  transformParams={props.value && props.value.transformParams}
+                  onChange={(transform, transformParams) =>
+                    props.onValueChange({
+                      ...props.input,
+                      transform,
+                      transformParams
+                    })
+                  }
+                />
+              </>
+            )}
+          </WizardStep>
+          <WizardStep<
+            Pick<
+              AddMapContext,
+              "image" | "rect1" | "rect2" | "transformParams" | "transform"
+            >,
+            AddMapContext
+          >
+            id="Metadata"
+            title="Naming"
+          >
+            {props => (
+              <>
+                <AddMetadata
+                  onChange={name =>
+                    props.onValueChange({ ...props.input, name })
+                  }
+                />
+              </>
+            )}
+          </WizardStep>
+        </Wizard>
       </FullPageWithHeading>
     </>
   );

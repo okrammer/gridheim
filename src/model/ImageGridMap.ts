@@ -1,8 +1,8 @@
 import { Immerable } from "../utils/Immerable";
-import { Transformation } from "./Transformation";
 import { BackgroundImage } from "./BackgroundImage";
-import { PropsOf } from "../utils/types";
 import { GridMap } from "./GridMap";
+import { Transform } from "../utils/Transform";
+import { Vector } from "../utils/Vector";
 
 @Immerable()
 export class ImageGridMap implements GridMap {
@@ -19,17 +19,15 @@ export class ImageGridMap implements GridMap {
   constructor(
     readonly name: string,
     readonly image: BackgroundImage,
-    readonly transformation: Transformation
+    readonly transform: Transform
   ) {
     Object.freeze(this);
   }
 
-  get widthInSquares(): number {
-    return Math.ceil(this.image.width * this.transformation.scale);
-  }
-
-  get heightInSquares(): number {
-    return Math.ceil(this.image.height * this.transformation.scale);
+  get squares(): Vector {
+    return new Vector(this.image.width, this.image.height).scale(
+      this.transform.scale
+    ).ceil;
   }
 
   get isAsset(): boolean {

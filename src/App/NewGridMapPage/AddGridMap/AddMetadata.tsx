@@ -1,14 +1,13 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import Octicon, { Tag } from "@primer/octicons-react";
-import { WizardButtons } from "./TransformationSetup/common/WizardButtons";
+import { useStateWithCallback } from "../../../utils/useStateWithCallback";
 
 interface Props {
-  onSave: (name: string) => void;
-  onBack: () => void;
+  onChange: (name: string | null) => void;
 }
 
-export const AddMetadata: FC<Props> = ({ onSave, onBack }: Props) => {
-  const [name, setName] = useState<undefined | string>("");
+export const AddMetadata: FC<Props> = ({ onChange }: Props) => {
+  const [name, setName] = useStateWithCallback<string | null>(null, onChange);
   return (
     <>
       <div className="row mt-3">
@@ -27,21 +26,11 @@ export const AddMetadata: FC<Props> = ({ onSave, onBack }: Props) => {
               className="form-control"
               placeholder="Background Name"
               onChange={(e): void => {
-                setName(e.target.value);
+                setName(e.target.value || null);
               }}
-              value={name}
+              value={name || ""}
             />
           </div>
-        </div>
-      </div>
-      <div className="row mt-3">
-        <div className="col-md-12">
-          <WizardButtons
-            onNext={() => name && onSave(name)}
-            onBack={() => onBack()}
-            nextDisabled={!name}
-            lastStep={true}
-          />
         </div>
       </div>
     </>
