@@ -7,6 +7,7 @@ import { ModeControlBar } from "./ControlBar/ModeControlBar";
 import { ManageTokenControlBar } from "./ControlBar/ManageTokenControlBar";
 import { ViewportControlBar } from "./ControlBar/ViewportControlBar";
 import { ViewportService } from "../services/ViewportService";
+import { useObservable } from "../../../utils/useObservable";
 
 interface Props {
   modeService: ModeService;
@@ -23,13 +24,25 @@ export const ControlBar: FC<Props> = ({
   manageTokenService,
   viewportService
 }: Props) => {
+  const showSecondary = useObservable(
+    modeService.oneOf("draw-background", "draw-notes", "manage-token", "zoom"),
+    false
+  );
   return (
-    <div className="navbar navbar-dark bg-dark control-pane">
-      <ModeControlBar modeService={modeService} />
-      <DrawingControlBar drawingService={notesDrawingService} />
-      <DrawingControlBar drawingService={backgroundDrawingService} />
-      <ManageTokenControlBar manageTokenService={manageTokenService} />
-      <ViewportControlBar viewportService={viewportService} />
-    </div>
+    <>
+      <div className="control-bar_primary navbar navbar-dark bg-dark">
+        <ModeControlBar modeService={modeService} />
+      </div>
+      {showSecondary && (
+        <div className="control-bar_secondary">
+          <div className="navbar navbar-dark bg-dark">
+            <DrawingControlBar drawingService={notesDrawingService} />
+            <DrawingControlBar drawingService={backgroundDrawingService} />
+            <ManageTokenControlBar manageTokenService={manageTokenService} />
+            <ViewportControlBar viewportService={viewportService} />
+          </div>
+        </div>
+      )}
+    </>
   );
 };

@@ -185,7 +185,7 @@ code {
   z-index: 2000;
 }
 
-.control-pane {
+.control-bar_primary {
   max-width: 100%;
   display: block;
   position: absolute;
@@ -193,6 +193,16 @@ code {
   left: 0;
   z-index: 3000; //must be more than bootstraps 1030 that are used for fix-top and more than 2000 which is the logo
 }
+
+.control-bar_secondary {
+  max-width: 100%;
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 100px;
+  z-index: 3000; //must be more than bootstraps 1030 that are used for fix-top and more than 2000 which is the logo
+}
+
 
 .drawing-capture-pane {
   fill: lightgrey;

@@ -49,6 +49,7 @@ export const DisplayDrawingPane: FC<Props> = ({
           <g
             id={name}
             className={`drawing-pane ${name} ${drawingMode} `}
+            // The event handler must be placed on the <g> otherwise, no events are emitted when touching a polyline
             onPointerMove={onPointerMove}
           >
             <rect

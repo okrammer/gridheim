@@ -57,7 +57,7 @@ export const App: FC<Props> = ({  }: Props) => {
               </AppPage>
             </Route>
             <Route path={routing.play}>
-              <AppPage noBackground={true}>
+              <AppPage noBackground={true} hideLegal={true}>
                 <PlayPage {...services} />
               </AppPage>
             </Route>

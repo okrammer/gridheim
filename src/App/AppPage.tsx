@@ -7,6 +7,7 @@ import { Legal } from "./Legal";
 interface Props {
   noBackground?: boolean;
   noHomeButton?: boolean;
+  hideLegal?: boolean;
   noRedirectToAboutOnFirstVisit?: boolean;
   children: ReactNode;
 }
@@ -14,6 +15,7 @@ interface Props {
 export const AppPage: FC<Props> = ({
   noBackground,
   noHomeButton,
+  hideLegal,
   noRedirectToAboutOnFirstVisit,
   children
 }: Props) => {
@@ -31,7 +33,7 @@ export const AppPage: FC<Props> = ({
     <>
       {wrapWithRedirect(
         <>
-          <Legal />
+          {!hideLegal && <Legal />}
           {!noHomeButton && <HomeButton />}
           {!noBackground && (
             <img src={backgroundImage} className="background" />

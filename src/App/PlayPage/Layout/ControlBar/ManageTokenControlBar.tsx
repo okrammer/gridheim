@@ -27,7 +27,8 @@ export const ManageTokenControlBar: FC<Props> = ({
       onClick={() => manageTokenService.switchMode(mode)}
       classes={{
         "btn-warning": mode === currentMode,
-        "btn-outline-warning": mode !== currentMode
+        "btn-outline-warning": mode !== currentMode,
+        "mr-2": true
       }}
     />
   );
@@ -35,9 +36,8 @@ export const ManageTokenControlBar: FC<Props> = ({
   return (
     <>
       {active && (
-        <div className="mt-md-5">
+        <>
           {modeButton(Plus, "add-token")}
-          {modeButton(Trashcan, "remove-token")}
           <div>
             <a
               href="#"
@@ -49,7 +49,9 @@ export const ManageTokenControlBar: FC<Props> = ({
                 btn: true,
                 "btn-sm": true,
                 "btn-warning": "switch-token-type" === currentMode,
-                "btn-outline-warning": "switch-token-type" !== currentMode
+                "btn-outline-warning": "switch-token-type" !== currentMode,
+                "mr-2": true,
+                "mb-2": true
               })}
             >
               {tokenType && tokenLabel && (
@@ -63,7 +65,9 @@ export const ManageTokenControlBar: FC<Props> = ({
               )}
             </a>
           </div>
-        </div>
+          <div className="mr-2" />
+          {modeButton(Trashcan, "remove-token")}
+        </>
       )}
     </>
   );

@@ -45,7 +45,8 @@ export const DrawingControlBar: FC<Props> = ({ drawingService }: Props) => {
       classes={{
         [`btn-secondary`]: drawingWidth === width,
         [`btn-outline-secondary`]: drawingWidth !== width,
-        "drawing-pane-button": true
+        "drawing-pane-button": true,
+        "mr-2": true
       }}
     />
   );
@@ -56,7 +57,8 @@ export const DrawingControlBar: FC<Props> = ({ drawingService }: Props) => {
       onClick={() => drawingService.switchDrawingColor(color)}
       classes={{
         [`drawing-button-${color}`]: drawingColor !== color,
-        [`drawing-button-${color}-selected`]: drawingColor === color
+        [`drawing-button-${color}-selected`]: drawingColor === color,
+        "mr-2": true
       }}
     />
   );
@@ -68,7 +70,8 @@ export const DrawingControlBar: FC<Props> = ({ drawingService }: Props) => {
       onClick={() => drawingService.switchDrawingMode(mode)}
       classes={{
         [`btn-warning`]: drawingMode === mode,
-        [`btn-outline-warning`]: drawingMode !== mode
+        [`btn-outline-warning`]: drawingMode !== mode,
+        "mr-2": true
       }}
     />
   );
@@ -76,14 +79,14 @@ export const DrawingControlBar: FC<Props> = ({ drawingService }: Props) => {
   return (
     <>
       {active && (
-        <div className="mt-md-5">
+        <>
           {drawingModeButton("draw", Pencil)}
           {drawingModeButton("erase", Trashcan)}
-          <div className="mt-md-4" />
+          <div className="mr-4" />
           {Object.values(DrawingWidth).map(width => widthButton(width))}
-          <div className="mt-md-4" />
+          <div className="mr-4" />
           {Object.values(DrawingColor).map(color => colorButton(color))}
-        </div>
+        </>
       )}
     </>
   );

@@ -21,7 +21,8 @@ export const ViewportControlBar: FC<Props> = ({ viewportService }: Props) => {
       icon={icon}
       onClick={action}
       classes={{
-        "btn-warning": true
+        "btn-warning": true,
+        "mr-2": true
       }}
     />
   );
@@ -29,10 +30,10 @@ export const ViewportControlBar: FC<Props> = ({ viewportService }: Props) => {
   return (
     <>
       {active && (
-        <div className="mt-md-5">
+        <>
           {modeButton(Plus, () => viewportService.zoomIn())}
           {modeButton(Dash, () => viewportService.zoomOut())}
-        </div>
+        </>
       )}
     </>
   );
