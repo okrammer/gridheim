@@ -26,10 +26,10 @@ export const labels = Object.freeze({
     )
   },
   assetPage: {
-    headline: "Used 3rd Party Assets"
+    headline: "Included 3rd Party Assets"
   },
   openSourcePage: {
-    headline: "Used Open Source Components"
+    headline: "Included Open Source Components"
   },
   aboutPage: {
     headline: "Let me tell you about Gridheim, Friend ...",
@@ -52,35 +52,43 @@ export const labels = Object.freeze({
       }
     },
     about: {
-      description: "TBD",
+      description:
+        "Here you find some bits of knowledge about this tool and it's maker.",
       button: "About"
     },
     openSource: {
-      description: "TBD",
+      description:
+        "This project were not possible without the opensource ecosystem it is build appon, thanks opensource community :)",
       button: "Open Source"
     },
     assets: {
-      description: "TBD",
+      description:
+        "This project wouldn't look this nice without the use of 'free' assets, that are provided to the community, big thanks to them!",
       button: "3rd Party Assets"
     },
     newGridMap: {
-      description: "TBD",
+      description:
+        "Here you could create a map by specifing a image from your device as background and put a grid on it.",
       button: "Add Map"
     },
     newSession: {
-      description: "TBD",
+      description:
+        "Here you can start a new session on a map. A session will store the position of each token and all drawings.",
       button: "Start New Session"
     },
     play: {
-      description: "TBD",
+      description:
+        "Continue a previous session. Sessions are continuously saved in the background, so you can easily start where you left off.",
       button: "Continue Session"
     },
     showGridMaps: {
-      description: "TBD",
+      description:
+        "Here you can see all created maps and remove those that are no longer needed.",
       button: "Manage Maps"
     },
     showSessions: {
-      description: "TBD",
+      description:
+        "Here you can see all stored sessions and continue them or remove those that are out dated",
       button: "Manage Sessions"
     }
   }

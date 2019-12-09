@@ -7,14 +7,14 @@ import { routing } from "../App";
 import { ImageGridMapRepository } from "../services/ImageGridMapRepository";
 import { Wizard } from "../common/Wizard";
 import { WizardStep } from "../common/Wizard/WizardStep";
-import { ImageUpload } from "./NewGridMapPage/AddGridMap/ImageUpload";
+import { ImageUpload } from "./NewGridMapPage/ImageUpload";
 import { BackgroundImage } from "../model/BackgroundImage";
-import { PlaceSquare } from "./NewGridMapPage/AddGridMap/TransformationSetup/PlaceSquare";
-import { PreviewGrid } from "./NewGridMapPage/AddGridMap/TransformationSetup/PreviewGrid";
-import { AddMetadata } from "./NewGridMapPage/AddGridMap/AddMetadata";
+import { PlaceSquare } from "./NewGridMapPage/PlaceSquare";
+import { PreviewGrid } from "./NewGridMapPage/PreviewGrid";
+import { AddMetadata } from "./NewGridMapPage/AddMetadata";
 import { ImageGridMap } from "../model/ImageGridMap";
 import { Rect } from "../utils/Rect";
-import { TransformParams } from "./NewGridMapPage/AddGridMap/TransformationSetup/common/TransformParams";
+import { TransformParams } from "./NewGridMapPage/common/TransformParams";
 import { Transform } from "../utils/Transform";
 
 export interface AddMapContext {

@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from "react";
 import { Props as WizardStepProps, WizardStep } from "./Wizard/WizardStep";
 import { Dict } from "../utils/types";
-import { WizardButtons } from "../App/NewGridMapPage/AddGridMap/TransformationSetup/common/WizardButtons";
+import { WizardButtons } from "../App/NewGridMapPage/common/WizardButtons";
 import Octicon, { X } from "@primer/octicons-react";
 import { StepIndicator } from "./StepIndicator";
 
