@@ -78,4 +78,8 @@ export class Vector {
   get ceil(): Vector {
     return new Vector(Math.ceil(this.x), Math.ceil(this.y));
   }
+
+  get components(): [number, number] {
+    return [this.x, this.y];
+  }
 }

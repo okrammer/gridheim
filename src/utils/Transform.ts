@@ -37,4 +37,8 @@ export class Transform {
   get scaleTranslateAttribute(): { transform: string } {
     return { transform: this.scaleTranslateString };
   }
+
+  get components(): [number, number, number] {
+    return [this.scale, this.translate.x, this.translate.y];
+  }
 }

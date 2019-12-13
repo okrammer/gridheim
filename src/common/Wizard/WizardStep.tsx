@@ -4,6 +4,7 @@ import { WizardContext } from "../Wizard";
 export interface Props<I, T> {
   id: string;
   title: string;
+  description?: ReactNode;
   children: (props: WizardStepComponentProps<I, T>) => ReactNode;
 }
 

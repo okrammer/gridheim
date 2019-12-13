@@ -69,6 +69,7 @@
           "import/named": "off",
           "import/no-named-as-default": "off",
           "react/prop-types": "off",
+          "react-hooks/exhaustive-deps": "off",
           "no-console": "warn",
           "jsx-a11y/anchor-is-valid": "off",
           "jsx-a11y/alt-text": "off"

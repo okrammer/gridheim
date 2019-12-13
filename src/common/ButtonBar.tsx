@@ -5,12 +5,13 @@ interface Props {
 }
 
 export const ButtonBar: FC<Props> = ({ children }: Props) => {
+  const childCount = React.Children.count(children);
   return (
     <>
       {React.Children.map(children, (child, index) => (
         <>
-          {!!index && <span className="mr-2" />}
           {child}
+          {child && index !== childCount - 1 && <span className="mr-2" />}
         </>
       ))}
     </>

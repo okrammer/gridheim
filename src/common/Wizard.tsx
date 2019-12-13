@@ -4,6 +4,7 @@ import { Dict } from "../utils/types";
 import { WizardButtons } from "../App/NewGridMapPage/common/WizardButtons";
 import Octicon, { X } from "@primer/octicons-react";
 import { StepIndicator } from "./StepIndicator";
+import { Row } from "./Row";
 
 export interface WizardContext {
   onValueChange: (id: string, value: any) => void;
@@ -58,8 +59,10 @@ export function Wizard<T>({
     // resetting current wizard step
     state[stepConfigs[current].id] = null;
   };
-  const nextDisabled = !state[stepConfigs[current].id];
+  const currentStepConfig = stepConfigs[current];
+  const nextDisabled = !state[currentStepConfig.id];
   const steps = stepConfigs.map(c => c.title);
+
   return (
     <>
       <div className="card">
@@ -80,20 +83,23 @@ export function Wizard<T>({
         </div>
 
         <div className="card-body">
-          <div className="row">
-            <div className="col-md-12">
-              <WizardContext.Provider value={context}>
-                {React.Children.toArray(children)[current]}
-              </WizardContext.Provider>
-            </div>
-            <div className="col-md-12">
-              <WizardButtons
-                onNext={onNext}
-                onBack={current !== 0 ? onBack : undefined}
-                nextDisabled={nextDisabled}
-              />
-            </div>
-          </div>
+          {currentStepConfig.description && (
+            <Row>
+              <div className="alert alert-primary">
+                {currentStepConfig.description}
+              </div>
+            </Row>
+          )}
+          <WizardContext.Provider value={context}>
+            {React.Children.toArray(children)[current]}
+          </WizardContext.Provider>
+          <Row>
+            <WizardButtons
+              onNext={onNext}
+              onBack={current !== 0 ? onBack : undefined}
+              nextDisabled={nextDisabled}
+            />
+          </Row>
         </div>
       </div>
     </>

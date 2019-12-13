@@ -16,6 +16,7 @@ import { ImageGridMap } from "../model/ImageGridMap";
 import { Rect } from "../utils/Rect";
 import { TransformParams } from "./NewGridMapPage/common/TransformParams";
 import { Transform } from "../utils/Transform";
+import { labels } from "../data/labels";
 
 export interface AddMapContext {
   image: BackgroundImage | null;
@@ -58,12 +59,14 @@ export const NewGridMapPage: FC<Props> = ({
           <WizardStep<unknown, BackgroundImage>
             id="imageUpload"
             title="Open Image"
+            description={labels.newGridMapPage.imageUpload.description}
           >
             {props => <ImageUpload {...props} />}
           </WizardStep>
           <WizardStep<BackgroundImage, Pick<AddMapContext, "image" | "rect1">>
             id="rect1"
             title="Mark 1st Square"
+            description={labels.newGridMapPage.rect1.description}
           >
             {props => (
               <>
@@ -84,6 +87,7 @@ export const NewGridMapPage: FC<Props> = ({
           >
             id="rect2"
             title="Mark 2st Square"
+            description={labels.newGridMapPage.rect2.description}
           >
             {props => (
               <>
@@ -107,6 +111,7 @@ export const NewGridMapPage: FC<Props> = ({
           >
             id="preview"
             title="Preview"
+            description={labels.newGridMapPage.preview.description}
           >
             {props => (
               <>
@@ -133,8 +138,9 @@ export const NewGridMapPage: FC<Props> = ({
             >,
             AddMapContext
           >
-            id="Metadata"
+            id="metadata"
             title="Naming"
+            description={labels.newGridMapPage.metadata.description}
           >
             {props => (
               <>

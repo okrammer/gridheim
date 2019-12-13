@@ -25,6 +25,54 @@ export const labels = Object.freeze({
       </>
     )
   },
+  newGridMapPage: {
+    imageUpload: {
+      description: (
+        <>
+          Select a image from your computer, that should be used as map.
+          <br />
+          This file is <em>not</em> uploaded to the internet but stored in your
+          browser.
+        </>
+      )
+    },
+    rect1: {
+      description: (
+        <>
+          For calculating the grid position, draw a rect over the image where 9
+          squares of the battle grid should be displayed later. <br />
+          Try to select an area in the
+          <em>left upper corner</em> of the map.
+        </>
+      )
+    },
+    rect2: {
+      description: (
+        <>
+          Now select a second rect with 9 squares on the
+          <em>right lower corner</em> of the map.
+        </>
+      )
+    },
+    preview: {
+      description: (
+        <>
+          So ... we try to place a grid that will match the grid on the image.
+          <br /> On big maps small errors in the placements of the previous
+          rects will result that there are too many or too few squares between
+          the rects, with the buttons below you can adjust this.
+        </>
+      )
+    },
+    metadata: {
+      description: (
+        <>
+          Nearly done :D ... all you have to do now is specify a name for this
+          map.
+        </>
+      )
+    }
+  },
   assetPage: {
     headline: "Included 3rd Party Assets"
   },
