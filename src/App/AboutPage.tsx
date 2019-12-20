@@ -7,6 +7,7 @@ import { PageHeader } from "../common/PageHeader";
 import { IntroSection } from "./AboutPage/IntroSection";
 import { HelloSection } from "./AboutPage/HelloSection";
 import { labels } from "../data/labels";
+import { GithubSecton } from "./AboutPage/GithubSection";
 
 interface Props {}
 
@@ -23,6 +24,7 @@ export const AboutPage: FC<Props> = ({  }: Props) => {
     >
       <IntroSection />
       <HelloSection />
+      <GithubSecton />
     </FullPageWithHeading>
   );
 };

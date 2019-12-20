@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { MediaBody } from "../../common/media/MediaBody";
 import Octicon, { GistSecret } from "@primer/octicons-react";
 import { MediaContainer } from "../../common/media/MediaContainer";
+import { AboutIcon } from "./AboutIcon";
 
 interface Props {}
 
@@ -11,12 +12,10 @@ export const HelloSection: FC<Props> = ({  }: Props) => {
       <div className="card-body">
         <MediaContainer>
           <MediaBody>
-            <h5>
-              <Octicon icon={GistSecret} size={25} />
-              <span className="ml-3">
-                Hello my name is <strong>Otto</strong> ...
-              </span>
-            </h5>
+            <p>
+              <AboutIcon icon={GistSecret} />
+              Hello my name is <strong>Otto</strong> ...
+            </p>
             <p>
               ... and I&apos;m a Software Engineer at
               <a href="https://comsystoreply.de/"> Comsysto Reply </a>
