@@ -19,17 +19,17 @@ const calculateTransformation = (
   const calculatedA = params.distance / params.squareCount;
 
   const dx1 = -rect1.topLeft.x % calculatedA;
-  const dx2 = -rect2.topLeft.x % calculatedA;
 
   // investigate way this leads sometimes to an offset of a half square
+  // const dx2 = -rect2.topLeft.x % calculatedA;
   // const dx = (dx1 + dx2) / 2;
 
   const dx = dx1;
 
   const dy1 = -rect1.topLeft.y % calculatedA;
-  const dy2 = -rect2.topLeft.y % calculatedA;
 
   // investigate way this leads sometimes to an offset of a half square
+  // const dy2 = -rect2.topLeft.y % calculatedA;
   // const dy = (dy1 + dy2) / 2;
 
   const dy = dy1;
