@@ -62,25 +62,26 @@ export const ImageUpload: FC<Props> = ({ value, onValueChange }: Props) => {
           </div>
         </Row>
       )}
-      <Row>
-        <div>
-          {image && (
-            <img
-              className="img-thumbnail gridMap-form_image-preview"
-              src={image.url}
-            />
-          )}
-          {!image && (
-            <button
-              className="btn btn-secondary btn-sm"
-              type="button"
-              onClick={() => updateImage(null)}
-            >
-              Change
-            </button>
-          )}
-        </div>
-      </Row>
+      {image && (
+        <Row>
+          <img
+            className="img-thumbnail gridMap-form_image-preview"
+            src={image.url}
+          />
+          )
+        </Row>
+      )}
+      {image && (
+        <Row>
+          <button
+            className="btn btn-secondary btn-sm"
+            type="button"
+            onClick={() => updateImage(null)}
+          >
+            Change
+          </button>
+        </Row>
+      )}
     </>
   );
 };

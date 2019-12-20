@@ -68,7 +68,7 @@ export const PlaceSquare: FC<Props> = ({
             <SelectionRect
               rect={rect}
               width={image.width}
-              height={image.width}
+              height={image.height}
               onChange={updateRect}
             />
           </g>
