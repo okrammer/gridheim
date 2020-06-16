@@ -4,7 +4,7 @@ import { opensource } from "../../data/opensource";
 
 interface Props {}
 
-export const OpenSourceSection: FC<Props> = ({  }: Props) => {
+export const OpenSourceSection: FC<Props> = ({}: Props) => {
   return (
     <>
       <h5 className="mt-5">

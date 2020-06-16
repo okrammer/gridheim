@@ -1,0 +1,49 @@
+name: Deploy Release Version
+
+on:
+  push:
+    tags: [ v*.* ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Prepare tag
+        id: prepare_tag
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          TAG_NAME="${GITHUB_REF##refs/tags/}"
+          echo "::set-output name=tag_name::${TAG_NAME}"
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Packages
+        run: npm install
+
+      - name: Build page
+        run: npm run build
+
+      - name: Deploy Release
+        run: |
+          VERSION_NAME=${{steps.prepare_tag.outputs.tag_name}}
+          git fetch
+          git worktree add gh-pages gh-pages
+          ls gh-pages | grep -v "dev" | xargs -I {} rm -r gh-pages/{}
+          mv ./build/* ./gh-pages
+          cd ./gh-pages
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --all
+          git commit -m "Deployed Release ${VERSION_NAME}"
+          git tag "deployment-${VERSION_NAME}"
+          git push origin gh-pages --tags

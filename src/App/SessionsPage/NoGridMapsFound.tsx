@@ -4,7 +4,7 @@ import { routing } from "../../App";
 
 interface Props {}
 
-export const NoGridMapsFound: FC<Props> = ({  }: Props) => {
+export const NoGridMapsFound: FC<Props> = ({}: Props) => {
   return (
     <>
       <h3>No Maps found</h3>

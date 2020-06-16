@@ -4,7 +4,7 @@ import Octicon, { Key, Law } from "@primer/octicons-react";
 
 interface Props {}
 
-export const Legal: FC<Props> = ({  }: Props) => {
+export const Legal: FC<Props> = ({}: Props) => {
   return (
     <div className="main-menu_legal-stuff">
       <small>

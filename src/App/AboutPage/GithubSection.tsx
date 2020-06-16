@@ -7,7 +7,7 @@ import { AboutIcon } from "./AboutIcon";
 
 interface Props {}
 
-export const GithubSecton: FC<Props> = ({  }: Props) => {
+export const GithubSecton: FC<Props> = ({}: Props) => {
   return (
     <div className="card mt-5">
       <div className="card-body">

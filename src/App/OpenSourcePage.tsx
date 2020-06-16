@@ -11,7 +11,7 @@ import { labels } from "../data/labels";
 
 interface Props {}
 
-export const OpenSourcePage: FC<Props> = ({  }: Props) => {
+export const OpenSourcePage: FC<Props> = ({}: Props) => {
   return (
     <FullPageWithHeading
       heading={

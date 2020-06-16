@@ -5,7 +5,7 @@ import { routing } from "../../App";
 
 interface Props {}
 
-export const NoSessionsFound: FC<Props> = ({  }: Props) => {
+export const NoSessionsFound: FC<Props> = ({}: Props) => {
   return (
     <FullPageWithHeading heading={<h1>Welcome to Gridheim, Stranger!</h1>}>
       <h3>No Session found</h3>

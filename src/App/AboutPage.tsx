@@ -11,7 +11,7 @@ import { GithubSecton } from "./AboutPage/GithubSection";
 
 interface Props {}
 
-export const AboutPage: FC<Props> = ({  }: Props) => {
+export const AboutPage: FC<Props> = ({}: Props) => {
   return (
     <FullPageWithHeading
       heading={

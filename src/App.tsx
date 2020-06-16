@@ -32,7 +32,7 @@ export const routing = {
 
 interface Props {}
 
-export const App: FC<Props> = ({  }: Props) => {
+export const App: FC<Props> = ({}: Props) => {
   const [services] = useState(() => {
     const storageProvider = new IndexedDbStorageProvider();
     const imageGridMapRepository = new ImageGridMapRepository(storageProvider);

@@ -6,7 +6,7 @@ import { labels } from "../data/labels";
 
 interface Props {}
 
-export const AssetsPage: FC<Props> = ({  }: Props) => {
+export const AssetsPage: FC<Props> = ({}: Props) => {
   return (
     <FullPageWithHeading
       heading={

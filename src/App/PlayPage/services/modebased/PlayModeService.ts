@@ -20,7 +20,10 @@ export class PlayModeService extends AbstractModeBasedService {
     ])
       .pipe(
         takeUntil(onDeactivate$),
-        distinctUntilChanged((a1, a2) => a1 === a2, ([a, b]) => `${a}/${b}`)
+        distinctUntilChanged(
+          (a1, a2) => a1 === a2,
+          ([a, b]) => `${a}/${b}`
+        )
       )
       .subscribe(([selectedToken, selectedSquare]) => {
         if (selectedToken && !selectedSquare) {

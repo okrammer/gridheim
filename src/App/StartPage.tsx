@@ -45,19 +45,16 @@ export const StartPage: FC<Props> = ({
       assetAction()
     ]).pipe(
       map(actions =>
-        actions.reduce(
-          (result, action) => {
-            if (!action) {
-              return result;
-            }
-            const section = action.section;
-            return {
-              ...result,
-              [section]: [...(result[section] || []), action]
-            };
-          },
-          {} as Dict<Array<Action>>
-        )
+        actions.reduce((result, action) => {
+          if (!action) {
+            return result;
+          }
+          const section = action.section;
+          return {
+            ...result,
+            [section]: [...(result[section] || []), action]
+          };
+        }, {} as Dict<Array<Action>>)
       ),
       take(1)
     ),

@@ -19,13 +19,10 @@ export const SelectionGrid: FC<Props> = ({
   highlightedSquares,
   onHover
 }: Props) => {
-  const highlightedMap = highlightedSquares.reduce(
-    (map, square) => {
-      map[square.toCoordinateString()] = true;
-      return map;
-    },
-    {} as Dict<boolean>
-  );
+  const highlightedMap = highlightedSquares.reduce((map, square) => {
+    map[square.toCoordinateString()] = true;
+    return map;
+  }, {} as Dict<boolean>);
 
   return (
     <BattleGrid width={width} height={height}>

@@ -4,7 +4,7 @@ import { AboutIcon } from "./AboutIcon";
 
 interface Props {}
 
-export const IntroSection: FC<Props> = ({  }: Props) => {
+export const IntroSection: FC<Props> = ({}: Props) => {
   return (
     <div className="card">
       <div className="card-body">

@@ -28,10 +28,10 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "build": "CI=false react-scripts build",
+    "test": "CI=false react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext=jsx,ts,tsx src"
+    "lint": "CI=false eslint --ext=jsx,ts,tsx src"
   },
   "eslintConfig": {
     "extends": [

@@ -7,7 +7,7 @@ import { PageHeader } from "../common/PageHeader";
 
 interface Props {}
 
-export const HomeButton: FC<Props> = ({  }: Props) => {
+export const HomeButton: FC<Props> = ({}: Props) => {
   return (
     <>
       <div className="navbar navbar-dark bg-dark logo-menu">
